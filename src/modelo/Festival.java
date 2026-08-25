@@ -81,7 +81,7 @@ public class Festival {
 
 	}
 
-	public List<ReporteMayoresCanon> calcularMayoresCanon() {
+	/*public List<ReporteMayoresCanon> calcularMayoresCanon() {
 		List<ReporteMayoresCanon> reportes = new ArrayList<>();
 
 		for (UnidadVenta unidad : this.unidades) {
@@ -95,7 +95,7 @@ public class Festival {
 		reportes.sort((r1, r2) -> Double.compare(r2.getCanon(), r1.getCanon()));
 
 		return reportes.subList(0, Math.min(3, reportes.size()));
-	}
+	}*/
 
 	public Festival(int id, String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin,
 			List<UnidadVenta> unidades) throws Exception {

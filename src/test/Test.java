@@ -16,9 +16,9 @@ import modelo.Pedido;
 import modelo.Personal;
 import modelo.Plato;
 import modelo.PuestoDesarmable;
-import modelo.ReporteMayoresCanon;
+/*import modelo.ReporteMayoresCanon;
 import modelo.ReporteVenta;
-import modelo.Sistema;
+import modelo.Sistema;*/
 import modelo.UnidadVenta;
 
 public class Test {
