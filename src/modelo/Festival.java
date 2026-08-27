@@ -81,22 +81,6 @@ public class Festival {
 
 	}
 
-	/*public List<ReporteMayoresCanon> calcularMayoresCanon() {
-		List<ReporteMayoresCanon> reportes = new ArrayList<>();
-
-		for (UnidadVenta unidad : this.unidades) {
-			String tipoUnidad = (unidad instanceof FoodTruck) ? "Food Truck" : "Puesto Desarmable";
-
-			double canon = unidad.calcularCannon(unidad.getConfiguracionCostos());
-
-			reportes.add(new ReporteMayoresCanon(unidad.getNombreComercial(), unidad.getCodigo(), tipoUnidad, canon));
-		}
-
-		reportes.sort((r1, r2) -> Double.compare(r2.getCanon(), r1.getCanon()));
-
-		return reportes.subList(0, Math.min(3, reportes.size()));
-	}*/
-
 	public Festival(int id, String nombre, String temporada, LocalDate fechaInicio, LocalDate fechaFin,
 			List<UnidadVenta> unidades) throws Exception {
 		setId(id);
@@ -124,40 +108,13 @@ public class Festival {
 
 	@Override
 	public String toString() {
-		// Encabezado del festival
-		StringBuilder sb = new StringBuilder();
-		sb.append("===============================================================\n");
-		sb.append("Festival: ").append(nombre).append(" (ID: ").append(id).append(")\n");
-		sb.append("Temporada: ").append(temporada).append("\n");
-		sb.append("Fechas: ").append(fechaInicio).append(" al ").append(fechaFin).append("\n");
-		sb.append("---------------------------------------------------------------\n");
-		sb.append("Unidades de Venta:\n");
-		sb.append("---------------------------------------------------------------\n");
-
-		// Encabezados de la tabla de unidades
-		sb.append(String.format("| %-4s | %-16s | %-10s | %-20s |%n", "ID", "Nombre Comercial", "Superficie", "Staff"));
-		sb.append(String.format("| %-4s | %-16s | %-10s |%10s | %8s |%n", "", "", "", "DNI", "CARGO"));
-
-		sb.append("|------|------------------|------------|----------------------|\n");
-
-		// Filas de la tabla (cada unidad de venta)
-		for (UnidadVenta unidad : unidades) {
-			sb.append(unidad.toString());
-			boolean flag = true;
-			for (Personal staff : unidad.getStaff()) {
-				if (!flag) {
-					sb.append(String.format("| %-4s | %-16s | %-10s |%10s|%n", "", "", "", staff.toTable()));
-				}
-				if (flag) {
-					sb.append(String.format("%10s%n", staff.toTable()));
-					flag = false;
-				}
-			}
-			sb.append("--------------------------------------------------------------|\n");
-
-		}
-
-		return sb.toString();
+		return "Festival{" +
+				"id=" + id +
+				", nombre='" + nombre + '\'' +
+				", temporada='" + temporada + '\'' +
+				", fechaInicio=" + fechaInicio +
+				", fechaFin=" + fechaFin +
+				", unidades=" + unidades +
+				'}';
 	}
-
 }

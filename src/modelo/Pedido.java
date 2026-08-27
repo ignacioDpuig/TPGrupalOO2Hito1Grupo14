@@ -79,10 +79,14 @@ public class Pedido {
 		return id == other.id;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("| %-20s | %-8s | %-10s |", "Unidad" + unidad.getCodigo(), "Festival" + festival.getId(),
-				fecha.toString());
+	@java.lang.Override
+	public java.lang.String toString() {
+		return "Pedido{" +
+				"id=" + id +
+				", fecha=" + fecha +
+				", unidad=" + unidad +
+				", festival=" + festival +
+				", detalles=" + detalles +
+				'}';
 	}
-
 }

@@ -56,9 +56,13 @@ public class Plato {
 
 	}
 
-	@Override
-	public String toString() {
-		return "Plato [nombre=" + nombre + ", precioVenta=" + precioVenta + "]";
+	@java.lang.Override
+	public java.lang.String toString() {
+		return "Plato{" +
+				"id=" + id +
+				", nombre='" + nombre + '\'' +
+				", precioVenta=" + precioVenta +
+				", costoProduccion=" + costoProduccion +
+				'}';
 	}
-
 }

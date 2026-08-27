@@ -27,7 +27,9 @@ public class DetallePedido {
 
 	@Override
 	public String toString() {
-		return String.format(" %-10s| %-4d", plato.getNombre(), cantidad);
+		return "DetallePedido{" +
+				"plato=" + plato +
+				", cantidad=" + cantidad +
+				'}';
 	}
-
 }

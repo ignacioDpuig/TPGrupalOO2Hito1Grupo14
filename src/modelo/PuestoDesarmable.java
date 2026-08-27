@@ -45,8 +45,11 @@ public class PuestoDesarmable extends UnidadVenta {
 		setTiempoMontajeMinutos(unidad.getTiempoMontajeMinutos());
 	}
 
-	@Override
-	public String toString() {
-		return String.format("| %-4d | %-16s | %10s |", id, nombreComercial, superficie + " mts\u00B2");
+	@java.lang.Override
+	public java.lang.String toString() {
+		return "PuestoDesarmable{" +
+				"cantidadCarpas=" + cantidadCarpas +
+				", tiempoMontajeMinutos=" + tiempoMontajeMinutos +
+				'}';
 	}
 }

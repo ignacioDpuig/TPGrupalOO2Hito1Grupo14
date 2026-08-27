@@ -48,7 +48,9 @@ public class FoodTruck extends UnidadVenta {
 
 	@Override
 	public String toString() {
-		return String.format("| %-4d | %-16s | %10s |", id, nombreComercial, superficie + " mts\u00B2");
+		return "FoodTruck{" +
+				"patente='" + patente + '\'' +
+				", requiereConexion=" + requiereConexion +
+				'}';
 	}
-
 }

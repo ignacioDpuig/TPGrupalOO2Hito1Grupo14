@@ -43,8 +43,10 @@ public class Cocinero extends Personal {
 
 	@Override
 	public String toString() {
-		return String.format("| %-4d | %-20s | %-10d | %-10s | %-10s | %-4s | %-11s | %-4d | %-10s |", id,
-				nombre + " " + apellido, dni, fechaNacimiento, fechaIngreso, "x", "x", categoria, especialidad);
+		return "Cocinero{" +
+				"especialidad='" + especialidad + '\'' +
+				", categoria=" + categoria +
+				'}';
 	}
 
 	@Override
