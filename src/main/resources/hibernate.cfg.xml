@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Conexión MySQL - completar con los datos reales -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost/epicentro_gourmet</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password"></property>
+        <property name="connection.pool_size">1</property>
+
+        <!-- Dialecto -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Muestra el SQL generado en consola -->
+        <property name="show_sql">true</property>
+
+        <!-- Mapeo de entidades -->
+        <mapping resource="mapeos/Festival.hbm.xml"/>
+        <mapping resource="mapeos/FoodTruck.hbm.xml"/>
+        <mapping resource="mapeos/PuestoDesarmable.hbm.xml"/>
+        <mapping resource="mapeos/Cajero.hbm.xml"/>
+        <mapping resource="mapeos/Cocinero.hbm.xml"/>
+        <mapping resource="mapeos/Encargado.hbm.xml"/>
+        <mapping resource="mapeos/Pedido.hbm.xml"/>
+        <mapping resource="mapeos/DetallePedido.hbm.xml"/>
+        <mapping resource="mapeos/Plato.hbm.xml"/>
+        <mapping resource="mapeos/ConfiguracionCostos.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>
