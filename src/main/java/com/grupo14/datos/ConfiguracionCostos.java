@@ -1,78 +1,98 @@
 package com.grupo14.datos;
 
 public class ConfiguracionCostos {
-	private int edadMinimaPersonal;
-	private double costoSuperficie;
-	private double costoMontaje;
-	private double plusElectricidad;
-	private double plusAntiguedad;
-	private double sueldoBase;
-	private double plusCategoria;
+    private int id;
+    private int edadMinimaPersonal;
+    private double costoSuperficie;
+    private double costoMontaje;
+    private double plusElectricidad;
+    private double plusAntiguedad;
+    private double sueldoBase;
+    private double plusCategoria;
 
-	public int getEdadMinimaPersonal() {
-		return edadMinimaPersonal;
-	}
+    public ConfiguracionCostos() {
+    }
 
-	public void setEdadMinimaPersonal(int edadMinimaPersonal) {
-		this.edadMinimaPersonal = edadMinimaPersonal;
-	}
+    public ConfiguracionCostos(int edadMinimaPersonal, double costoSuperficie, double costoMontaje,
+                               double plusElectricidad, double plusAntiguedad, double sueldoBase, double plusCategoria) {
+        this.edadMinimaPersonal = edadMinimaPersonal;
+        this.costoSuperficie = costoSuperficie;
+        this.costoMontaje = costoMontaje;
+        this.plusElectricidad = plusElectricidad;
+        this.plusAntiguedad = plusAntiguedad;
+        this.sueldoBase = sueldoBase;
+        this.plusCategoria = plusCategoria;
+    }
 
-	public double getCostoSuperficie() {
-		return costoSuperficie;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setCostoSuperficie(double costoSuperficie) {
-		this.costoSuperficie = costoSuperficie;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public double getCostoMontaje() {
-		return costoMontaje;
-	}
+    public int getEdadMinimaPersonal() {
+        return edadMinimaPersonal;
+    }
 
-	public void setCostoMontaje(double costoMontaje) {
-		this.costoMontaje = costoMontaje;
-	}
+    public void setEdadMinimaPersonal(int edadMinimaPersonal) {
+        this.edadMinimaPersonal = edadMinimaPersonal;
+    }
 
-	public double getPlusElectricidad() {
-		return plusElectricidad;
-	}
+    public double getCostoSuperficie() {
+        return costoSuperficie;
+    }
 
-	public void setPlusElectricidad(double plusElectricidad) {
-		this.plusElectricidad = plusElectricidad;
-	}
+    public void setCostoSuperficie(double costoSuperficie) {
+        this.costoSuperficie = costoSuperficie;
+    }
 
-	public double getPlusAntiguedad() {
-		return plusAntiguedad;
-	}
+    public double getCostoMontaje() {
+        return costoMontaje;
+    }
 
-	public void setPlusAntiguedad(double plusAntiguedad) {
-		this.plusAntiguedad = plusAntiguedad;
-	}
+    public void setCostoMontaje(double costoMontaje) {
+        this.costoMontaje = costoMontaje;
+    }
 
-	public double getSueldoBase() {
-		return sueldoBase;
-	}
+    public double getPlusElectricidad() {
+        return plusElectricidad;
+    }
 
-	public void setSueldoBase(double sueldoBase) {
-		this.sueldoBase = sueldoBase;
-	}
+    public void setPlusElectricidad(double plusElectricidad) {
+        this.plusElectricidad = plusElectricidad;
+    }
 
-	public double getPlusCategoria() {
-		return plusCategoria;
-	}
+    public double getPlusAntiguedad() {
+        return plusAntiguedad;
+    }
 
-	public void setPlusCategoria(double plusCategoria) {
-		this.plusCategoria = plusCategoria;
-	}
+    public void setPlusAntiguedad(double plusAntiguedad) {
+        this.plusAntiguedad = plusAntiguedad;
+    }
 
-	public ConfiguracionCostos(int edadMinimaPersonal, double costoSuperficie, double costoMontaje,
-			double plusElectricidad, double plusAntiguedad, double sueldoBase, double plusCategoria) {
-		this.edadMinimaPersonal = edadMinimaPersonal;
-		this.costoSuperficie = costoSuperficie;
-		this.costoMontaje = costoMontaje;
-		this.plusElectricidad = plusElectricidad;
-		this.plusAntiguedad = plusAntiguedad;
-		this.sueldoBase = sueldoBase;
-		this.plusCategoria = plusCategoria;
-	}
+    public double getSueldoBase() {
+        return sueldoBase;
+    }
+
+    public void setSueldoBase(double sueldoBase) {
+        this.sueldoBase = sueldoBase;
+    }
+
+    public double getPlusCategoria() {
+        return plusCategoria;
+    }
+
+    public void setPlusCategoria(double plusCategoria) {
+        this.plusCategoria = plusCategoria;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfiguracionCostos [id=" + id + ", edadMinimaPersonal=" + edadMinimaPersonal +
+               ", costoSuperficie=" + costoSuperficie + ", costoMontaje=" + costoMontaje +
+               ", plusElectricidad=" + plusElectricidad + ", plusAntiguedad=" + plusAntiguedad +
+               ", sueldoBase=" + sueldoBase + ", plusCategoria=" + plusCategoria + "]";
+    }
 }

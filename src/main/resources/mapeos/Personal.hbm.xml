@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.grupo14.datos.Personal" table="personal">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="apellido" column="apellido" type="string"/>
+        <property name="dni" column="dni" type="long"/>
+        <property name="fechaNacimiento" column="fecha_nacimiento" type="localdate"/>
+        <property name="fechaIngreso" column="fecha_ingreso" type="localdate"/>
+
+        <joined-subclass name="com.grupo14.datos.Cajero" table="cajero">
+            <key column="id_cajero"/>
+            <property name="turno" column="turno" type="string"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.grupo14.datos.Cocinero" table="cocinero">
+            <key column="id_cocinero"/>
+            <property name="especialidad" column="especialidad" type="string"/>
+            <property name="categoria" column="categoria" type="int"/>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>
