@@ -1,114 +1,99 @@
 package com.grupo14.datos;
-import com.grupo14.util.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 
 public abstract class Personal {
-	protected int id;
-	protected String nombre;
-	protected String apellido;
-	protected long dni;
-	protected LocalDate fechaNacimiento;
-	protected LocalDate fechaIngreso;
+    protected int id;
+    protected String nombre;
+    protected String apellido;
+    protected long dni;
+    protected LocalDate fechaNacimiento;
+    protected LocalDate fechaIngreso;
 
-	public int getId() {
-		return id;
-	}
+    public Personal() {
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public Personal(int id, String nombre, String apellido, long dni,
+                    LocalDate fechaNacimiento, LocalDate fechaIngreso) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fechaNacimiento = fechaNacimiento;
+        this.fechaIngreso = fechaIngreso;
+    }
 
-	public void setNombre(String nombre) throws Exception {
-		this.nombre = validaciones.validarAtributoString(nombre, "nombre");
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getApellido() {
-		return apellido;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setApellido(String apellido) throws Exception {
-		this.apellido = validaciones.validarAtributoString(apellido, "apellido");
-		;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public long getDni() {
-		return dni;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	private void setId(int id) throws Exception {
-		this.id = validaciones.validarId(id);
-		;
-	}
+    public String getApellido() {
+        return apellido;
+    }
 
-	public void setDni(long dni) throws Exception {
-		this.dni = validaciones.validarDni(dni);
-		;
-	}
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
+    public long getDni() {
+        return dni;
+    }
 
-	public void setFechaNacimiento(LocalDate fechaNacimiento) throws Exception {
-		this.fechaNacimiento = validaciones.validarFechaNacimiento(fechaNacimiento);
-		;
-	}
+    public void setDni(long dni) {
+        this.dni = dni;
+    }
 
-	public LocalDate getFechaIngreso() {
-		return fechaIngreso;
-	}
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
 
-	public void setFechaIngreso(LocalDate fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
-	public int calcularAntiguedad() {
-		LocalDate fechaIngreso = getFechaIngreso();
-		LocalDate fechaActual = LocalDate.now();
-		int antiguedad = (int) ChronoUnit.YEARS.between(fechaIngreso, fechaActual);
-		return antiguedad;
-	}
+    public LocalDate getFechaIngreso() {
+        return fechaIngreso;
+    }
 
-	public abstract double calcularHaberes(ConfiguracionCostos configuracionFestival);
+    public void setFechaIngreso(LocalDate fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
 
-	public Personal(int id, String nombre, String apellido, long dni, LocalDate fechaNacimiento, LocalDate fechaIngreso)
-			throws Exception {
-		setId(id);
-		setNombre(nombre);
-		setApellido(apellido);
-		setDni(dni);
-		setFechaNacimiento(fechaNacimiento);
-		setFechaIngreso(fechaIngreso);
-	}
+    public int calcularAntiguedad() {
+        LocalDate fechaActual = LocalDate.now();
+        int antiguedad = (int) ChronoUnit.YEARS.between(fechaIngreso, fechaActual);
+        return antiguedad;
+    }
 
-	public Personal(Personal personal) throws Exception {
-		setId(personal.getId());
-		setNombre(personal.getNombre());
-		setApellido(personal.getApellido());
-		setDni(personal.getDni());
-		setFechaNacimiento(personal.getFechaNacimiento());
-		setFechaIngreso(personal.getFechaIngreso());
-	}
+    public abstract double calcularHaberes(ConfiguracionCostos configuracionFestival);
 
-	public Personal() {
-	}
+    @Override
+    public String toString() {
+        return "Personal [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido +
+               ", dni=" + dni + ", fechaNacimiento=" + fechaNacimiento +
+               ", fechaIngreso=" + fechaIngreso + "]";
+    }
 
-	@Override
-	public abstract String toString();
-
-	public abstract String toTable();
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		Personal other = (Personal) obj;
-		return dni == other.dni;
-	}
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        Personal other = (Personal) obj;
+        return dni == other.dni;
+    }
 }
