@@ -11,8 +11,8 @@ public class PuestoDesarmable extends UnidadVenta {
 
     public PuestoDesarmable(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
                             List<Personal> staff, int cantidadCarpas, float tiempoMontajeMinutos,
-                            ConfiguracionCostos configuracionCostos, List<Pedido> pedidos, List<Plato> platos) {
-        super(id, nombreComercial, responsableACargo, superficie, codigo, staff, configuracionCostos, pedidos, platos);
+                            List<Pedido> pedidos, List<Plato> platos) {
+        super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
         this.cantidadCarpas = cantidadCarpas;
         this.tiempoMontajeMinutos = tiempoMontajeMinutos;
     }
@@ -34,10 +34,10 @@ public class PuestoDesarmable extends UnidadVenta {
     }
 
     @Override
-    public double calcularCannon(ConfiguracionCostos configuracionCostos) {
-        double cannon = getSuperficie() * configuracionCostos.getCostoSuperficie();
-        cannon -= getTiempoMontajeMinutos() * configuracionCostos.getCostoMontaje();
-        // TODO: esto debería usar LocalDate, sacar minutos y calcular el decimal
+    public double calcularCannon(Festival festival) {
+        ConfiguracionCostos config = festival.getConfiguracionCostos();
+        double cannon = getSuperficie() * config.getCostoSuperficie();
+        cannon -= getTiempoMontajeMinutos() * config.getCostoMontaje();
         return cannon;
     }
 

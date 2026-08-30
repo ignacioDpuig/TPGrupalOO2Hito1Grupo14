@@ -15,12 +15,12 @@
         <property name="fechaIngreso" column="fecha_ingreso"/>
 
         <joined-subclass name="com.grupo14.datos.Cajero" table="cajero">
-            <key column="id_cajero"/>
+            <key column="id"/>
             <property name="turno" column="turno" type="string"/>
         </joined-subclass>
 
         <joined-subclass name="com.grupo14.datos.Cocinero" table="cocinero">
-            <key column="id_cocinero"/>
+            <key column="id"/>
             <property name="especialidad" column="especialidad" type="string"/>
             <property name="categoria" column="categoria" type="int"/>
         </joined-subclass>

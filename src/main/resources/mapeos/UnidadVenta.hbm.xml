@@ -13,7 +13,7 @@
         <property name="codigo" column="codigo" type="string"/>
 
         <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false"/>
-        <many-to-one name="configuracionCostos" class="com.grupo14.datos.ConfiguracionCostos" column="id_configuracion_costos" not-null="false"/>
+
 
         <set name="staff" table="unidad_venta_staff" cascade="save-update">
             <key column="id_unidad_venta"/>

@@ -12,7 +12,6 @@ public abstract class UnidadVenta {
     protected float superficie;
     protected String codigo;
     protected List<Personal> staff = new ArrayList<>();
-    protected ConfiguracionCostos configuracionCostos;
     protected List<Plato> platos = new ArrayList<>();
     protected List<Pedido> pedidos = new ArrayList<>();
 
@@ -20,15 +19,14 @@ public abstract class UnidadVenta {
     }
 
     public UnidadVenta(int id, String nombreComercial, Personal responsableACargo,
-                        float superficie, String codigo, List<Personal> staff,
-                        ConfiguracionCostos costos, List<Pedido> pedidos, List<Plato> platos) {
+                       float superficie, String codigo, List<Personal> staff,
+                       List<Pedido> pedidos, List<Plato> platos) {
         this.id = id;
         this.nombreComercial = nombreComercial;
         this.responsableACargo = responsableACargo;
         this.superficie = superficie;
         this.codigo = codigo;
         this.staff = staff != null ? staff : new ArrayList<>();
-        this.configuracionCostos = costos;
         this.pedidos = pedidos != null ? pedidos : new ArrayList<>();
         this.platos = platos != null ? platos : new ArrayList<>();
     }
@@ -50,10 +48,7 @@ public abstract class UnidadVenta {
     public String getCodigo() { return codigo; }
     public void setCodigo(String codigo) { this.codigo = codigo; }
 
-    public ConfiguracionCostos getConfiguracionCostos() { return configuracionCostos; }
-    public void setConfiguracionCostos(ConfiguracionCostos configuracionCostos) { this.configuracionCostos = configuracionCostos; }
-
-    // --- Listas: getters devuelven la lista real, no copia ---
+    // --- Listas ---
 
     public List<Personal> getStaff() { return staff; }
     public void setStaff(List<Personal> staff) { this.staff = staff != null ? staff : new ArrayList<>(); }
@@ -64,7 +59,7 @@ public abstract class UnidadVenta {
     public List<Pedido> getPedidos() { return pedidos; }
     public void setPedidos(List<Pedido> pedidos) { this.pedidos = pedidos != null ? pedidos : new ArrayList<>(); }
 
-    // --- Métodos de negocio ---
+    // --- Métodos de gestión ---
 
     public boolean agregarPersonal(Personal personal) {
         return staff.add(personal);
@@ -90,15 +85,18 @@ public abstract class UnidadVenta {
         return pedidos.remove(pedido);
     }
 
-    public double calcularSueldos(ConfiguracionCostos configuracionCostos) {
+    // --- Métodos de negocio que dependen del Festival / ConfiguracionCostos ---
+
+    public double calcularSueldos(Festival festival) {
+        ConfiguracionCostos config = festival.getConfiguracionCostos();
         double sueldos = 0;
         for (Personal personal : staff) {
-            sueldos += personal.calcularHaberes(configuracionCostos);
+            sueldos += personal.calcularHaberes(config);
         }
         return sueldos;
     }
 
-    public abstract double calcularCannon(ConfiguracionCostos configuracionCostos);
+    public abstract double calcularCannon(Festival festival);
 
     public Plato platoEstrella() {
         if (pedidos == null || pedidos.isEmpty()) {
@@ -119,7 +117,8 @@ public abstract class UnidadVenta {
                     }
                 }
                 if (!platoEncontrado) {
-                    totalesPorPlato.add(new DetallePedido(platoActual, cantidadActual));
+                    // Pasamos null en el pedido ya que es un objeto acumulador temporal en memoria
+                    totalesPorPlato.add(new DetallePedido(null, platoActual, cantidadActual));
                 }
             }
         }
@@ -135,17 +134,17 @@ public abstract class UnidadVenta {
         return detalleEstrella.getPlato();
     }
 
-    public double calcularRentabilidadNeta() {
+    public double calcularRentabilidadNeta(Festival festival) {
         double gananciaNeta = 0;
         for (Pedido pedido : pedidos) {
             for (DetallePedido detalle : pedido.getDetalles()) {
                 gananciaNeta += detalle.getPlato().calcularNeto() * detalle.getCantidad();
             }
         }
-        return gananciaNeta - calcularSueldos(configuracionCostos) - calcularCannon(configuracionCostos);
+        return gananciaNeta - calcularSueldos(festival) - calcularCannon(festival);
     }
 
-    public double calcularRentabilidadNetaEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta) {
+    public double calcularRentabilidadNetaEntreFechas(Festival festival, LocalDate fechaDesde, LocalDate fechaHasta) {
         double gananciaNeta = 0;
         for (Pedido pedido : pedidos) {
             if (!pedido.getFecha().isBefore(fechaDesde) && !pedido.getFecha().isAfter(fechaHasta)) {
@@ -154,7 +153,7 @@ public abstract class UnidadVenta {
                 }
             }
         }
-        return gananciaNeta - calcularSueldos(configuracionCostos) - calcularCannon(configuracionCostos);
+        return gananciaNeta - calcularSueldos(festival) - calcularCannon(festival);
     }
 
     public float calcularRecaudacionTotal() {

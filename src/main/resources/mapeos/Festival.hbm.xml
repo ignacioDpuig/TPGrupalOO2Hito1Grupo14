@@ -13,6 +13,9 @@
         <property name="fechaInicio" column="fecha_inicio" />
         <property name="fechaFin" column="fecha_fin" />
 
+        <!-- Relación con ConfiguracionCostos -->
+        <many-to-one name="configuracionCostos" class="com.grupo14.datos.ConfiguracionCostos" column="id_configuracion_costos" not-null="true"/>
+
         <set name="unidades" inverse="true" cascade="all-delete-orphan">
             <key column="id_festival"/>
             <one-to-many class="com.grupo14.datos.UnidadVenta"/>

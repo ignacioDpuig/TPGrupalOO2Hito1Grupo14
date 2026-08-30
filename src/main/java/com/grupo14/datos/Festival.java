@@ -11,6 +11,7 @@ public class Festival {
     private String temporada;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private ConfiguracionCostos configuracionCostos; // <-- Agregado
     private List<UnidadVenta> unidades = new ArrayList<>();
 
     public Festival() {
@@ -18,12 +19,14 @@ public class Festival {
 
     public Festival(int id, String nombre, String temporada,
                     LocalDate fechaInicio, LocalDate fechaFin,
+                    ConfiguracionCostos configuracionCostos,
                     List<UnidadVenta> unidades) {
         this.id = id;
         this.nombre = nombre;
         this.temporada = temporada;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.configuracionCostos = configuracionCostos; // <-- Agregado
         this.unidades = unidades != null ? unidades : new ArrayList<>();
     }
 
@@ -41,6 +44,12 @@ public class Festival {
 
     public LocalDate getFechaFin() { return fechaFin; }
     public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
+
+    // --- Getters y Setters de ConfiguracionCostos ---
+    public ConfiguracionCostos getConfiguracionCostos() { return configuracionCostos; }
+    public void setConfiguracionCostos(ConfiguracionCostos configuracionCostos) { 
+        this.configuracionCostos = configuracionCostos; 
+    }
 
     public List<UnidadVenta> getUnidades() { return unidades; }
     public void setUnidades(List<UnidadVenta> unidades) {
