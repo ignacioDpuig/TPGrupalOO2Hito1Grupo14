@@ -1,5 +1,6 @@
-/*package com.grupo14.test;
 
+
+/*
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +13,35 @@ import com.grupo14.datos.Encargado;
 import com.grupo14.datos.Festival;
 import com.grupo14.datos.FoodTruck;
 import com.grupo14.datos.Pedido;
-import com.grupo14.datos.Personal;
+import com grupo14.datos.Personal;
 import com.grupo14.datos.Plato;
 import com.grupo14.datos.PuestoDesarmable;
 import com.grupo14.datos.UnidadVenta;
 import com.grupo14.util.Funciones;
-/*
-import com.grupo14.negocio.Sistema;
-import com.grupo14.datos.ReporteVenta;
-import com.grupo14.datos.ReporteMayoresCanon;
+*/
+package com.grupo14.test;
 
+import org.hibernate.Session;
+import com.grupo14.dao.HibernateUtil;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class Test {
+public class ConexionTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void probarConexionYCreacionTablas() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        assertNotNull(session, "La sesión no debe ser nula");
+        System.out.println("¡Conexión exitosa y tablas creadas en MySQL!");
+        session.close();
+    }
+}
+    /*
+    // CÓDIGO ANTERIOR COMENTADO - Descomentar cuando Sistema esté implementado
+    
+    public static void mainOLD(String[] args) {
+        
         try {
-            // TODO: descomentar cuando Sistema esté implementado
-            // Sistema sistema = new Sistema();
-
             ConfiguracionCostos costos = new ConfiguracionCostos(1, 500, 10, 2000, 5000, 100000, 500);
 
             System.out.println("\n--- CU 1---");
@@ -170,9 +182,5 @@ public class Test {
             e.printStackTrace();
         }
     }
-}
+    */
 
-TODO ESTO
-es comentario
-no compila nada
-*/

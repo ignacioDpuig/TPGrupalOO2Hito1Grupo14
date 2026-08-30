@@ -11,8 +11,8 @@
         <property name="nombre" column="nombre" type="string"/>
         <property name="apellido" column="apellido" type="string"/>
         <property name="dni" column="dni" type="long"/>
-        <property name="fechaNacimiento" column="fecha_nacimiento" type="localdate"/>
-        <property name="fechaIngreso" column="fecha_ingreso" type="localdate"/>
+        <property name="fechaNacimiento" column="fecha_nacimiento"/>
+        <property name="fechaIngreso" column="fecha_ingreso"/>
 
         <joined-subclass name="com.grupo14.datos.Cajero" table="cajero">
             <key column="id_cajero"/>

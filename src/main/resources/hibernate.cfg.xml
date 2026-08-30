@@ -8,23 +8,21 @@
 
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost/tp_grupo14</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.username">joacoadra</property>
+        <property name="connection.password">Estudiantes2004</property>
         <property name="connection.pool_size">1</property>
 
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
 
+        <mapping resource="mapeos/ConfiguracionCostos.hbm.xml"/>
         <mapping resource="mapeos/Plato.hbm.xml"/>
+        <mapping resource="mapeos/Personal.hbm.xml"/>
+        <mapping resource="mapeos/UnidadVenta.hbm.xml"/>
         <mapping resource="mapeos/Festival.hbm.xml"/>
-        <mapping resource="mapeos/FoodTruck.hbm.xml"/>
-        <mapping resource="mapeos/PuestoDesarmable.hbm.xml"/>
-        <mapping resource="mapeos/Cajero.hbm.xml"/>
-        <mapping resource="mapeos/Cocinero.hbm.xml"/>
         <mapping resource="mapeos/Pedido.hbm.xml"/>
         <mapping resource="mapeos/DetallePedido.hbm.xml"/>
-        <mapping resource="mapeos/ConfiguracionCostos.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

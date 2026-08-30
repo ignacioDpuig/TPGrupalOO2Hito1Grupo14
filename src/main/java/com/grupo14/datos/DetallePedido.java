@@ -1,35 +1,32 @@
 package com.grupo14.datos;
 
 public class DetallePedido {
-	private Plato plato;
-	private int cantidad;
 
-	public Plato getPlato() {
-		return plato;
-	}
+    
+    private Plato plato;
+    private int cantidad;
 
-	public void setPlato(Plato plato) {
-		this.plato = plato;
-	}
+  	public DetallePedido() {}
 
-	public int getCantidad() {
-		return cantidad;
-	}
+    public DetallePedido(Plato plato, int cantidad) {
+        this.plato = plato;
+        this.cantidad = cantidad;
+    }
 
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
 
-	public DetallePedido(Plato plato, int cantidad) {
-		this.plato = plato;
-		this.cantidad = cantidad;
-	}
+    public Plato getPlato() {
+        return plato;
+    }
 
-	@Override
-	public String toString() {
-		return "DetallePedido{" +
-				"plato=" + plato +
-				", cantidad=" + cantidad +
-				'}';
-	}
+    public void setPlato(Plato plato) {
+        this.plato = plato;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 }
