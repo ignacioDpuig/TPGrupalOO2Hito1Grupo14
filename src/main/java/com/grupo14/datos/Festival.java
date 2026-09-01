@@ -2,7 +2,9 @@ package com.grupo14.datos;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Festival {
 
@@ -11,24 +13,31 @@ public class Festival {
     private String temporada;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private ConfiguracionCostos configuracionCostos; // <-- Agregado
-    private List<UnidadVenta> unidades = new ArrayList<>();
-
+    private double costoSuperficie;
+    private double costoMontaje;
+    private double plusElectricidad;
+    private double sueldoBase;
+    private Set<UnidadVenta> unidades = new HashSet<>();
     public Festival() {
     }
 
     public Festival(int id, String nombre, String temporada,
                     LocalDate fechaInicio, LocalDate fechaFin,
-                    ConfiguracionCostos configuracionCostos,
+                    double costoSuperficie, double costoMontaje,
+                    double plusElectricidad, double sueldoBase,
                     List<UnidadVenta> unidades) {
         this.id = id;
         this.nombre = nombre;
         this.temporada = temporada;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.configuracionCostos = configuracionCostos; // <-- Agregado
-        this.unidades = unidades != null ? unidades : new ArrayList<>();
+        this.costoSuperficie = costoSuperficie;
+        this.costoMontaje = costoMontaje;
+        this.plusElectricidad = plusElectricidad;
+        this.sueldoBase = sueldoBase;
+        this.unidades = unidades != null ? new HashSet<>(unidades) : new HashSet<>();
     }
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -46,15 +55,23 @@ public class Festival {
     public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
 
     // --- Getters y Setters de ConfiguracionCostos ---
-    public ConfiguracionCostos getConfiguracionCostos() { return configuracionCostos; }
-    public void setConfiguracionCostos(ConfiguracionCostos configuracionCostos) { 
-        this.configuracionCostos = configuracionCostos; 
+    public double getCostoSuperficie() { return costoSuperficie; }
+    public void setCostoSuperficie(double costoSuperficie) { this.costoSuperficie = costoSuperficie; }
+
+    public double getCostoMontaje() { return costoMontaje; }
+    public void setCostoMontaje(double costoMontaje) { this.costoMontaje = costoMontaje; }
+
+    public double getPlusElectricidad() { return plusElectricidad; }
+    public void setPlusElectricidad(double plusElectricidad) { this.plusElectricidad = plusElectricidad; }
+
+    public double getSueldoBase() { return sueldoBase; }
+    public void setSueldoBase(double sueldoBase) { this.sueldoBase = sueldoBase; }
+
+    public Set<UnidadVenta> getUnidades() { return unidades; }
+    public void setUnidades(Set<UnidadVenta> unidades) {
+        this.unidades = unidades != null ? unidades : new HashSet<>();
     }
 
-    public List<UnidadVenta> getUnidades() { return unidades; }
-    public void setUnidades(List<UnidadVenta> unidades) {
-        this.unidades = unidades != null ? unidades : new ArrayList<>();
-    }
 
     public boolean agregarUnidad(UnidadVenta unidad) {
         if (unidad == null) return false;

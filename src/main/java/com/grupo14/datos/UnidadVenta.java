@@ -1,9 +1,7 @@
 package com.grupo14.datos;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class UnidadVenta {
     protected int id;
@@ -11,24 +9,24 @@ public abstract class UnidadVenta {
     protected Personal responsableACargo;
     protected float superficie;
     protected String codigo;
-    protected List<Personal> staff = new ArrayList<>();
-    protected List<Plato> platos = new ArrayList<>();
-    protected List<Pedido> pedidos = new ArrayList<>();
+    protected Set<Personal> staff = new HashSet<>();
+    protected Set<Plato> platos = new HashSet<>();
+    protected Set<Pedido> pedidos = new HashSet<>();
 
     public UnidadVenta() {
     }
 
     public UnidadVenta(int id, String nombreComercial, Personal responsableACargo,
-                       float superficie, String codigo, List<Personal> staff,
-                       List<Pedido> pedidos, List<Plato> platos) {
-        this.id = id;
-        this.nombreComercial = nombreComercial;
-        this.responsableACargo = responsableACargo;
-        this.superficie = superficie;
-        this.codigo = codigo;
-        this.staff = staff != null ? staff : new ArrayList<>();
-        this.pedidos = pedidos != null ? pedidos : new ArrayList<>();
-        this.platos = platos != null ? platos : new ArrayList<>();
+                       float superficie, String codigo, Set<Personal> staff,
+                       Set<Pedido> pedidos, Set<Plato> platos) throws Exception {
+        setId(id);
+        setNombreComercial(nombreComercial);
+        setResponsableACargo(responsableACargo);
+        setSuperficie(superficie);
+        setCodigo(codigo);
+        setStaff(staff);
+        setPedidos(pedidos);
+        setPlatos(platos);
     }
 
     // --- Getters y setters simples ---
@@ -46,19 +44,28 @@ public abstract class UnidadVenta {
     public void setSuperficie(float superficie) { this.superficie = superficie; }
 
     public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
 
+    public void setCodigo(String codigo) throws Exception {
+        if (codigo == null || codigo.length() != 10) {
+            throw new Exception("El código debe tener exactamente 10 caracteres");
+        }
+        this.codigo = codigo;
+    }
     // --- Listas ---
 
-    public List<Personal> getStaff() { return staff; }
-    public void setStaff(List<Personal> staff) { this.staff = staff != null ? staff : new ArrayList<>(); }
+    public Set<Personal> getStaff() { return staff; }
+    public void setStaff(Set<Personal> staff) {
+        this.staff = staff != null ? staff : new HashSet<>();
+    }
 
-    public List<Plato> getPlatos() { return platos; }
-    public void setPlatos(List<Plato> platos) { this.platos = platos != null ? platos : new ArrayList<>(); }
-
-    public List<Pedido> getPedidos() { return pedidos; }
-    public void setPedidos(List<Pedido> pedidos) { this.pedidos = pedidos != null ? pedidos : new ArrayList<>(); }
-
+    public Set<Plato> getPlatos() { return platos; }
+    public void setPlatos(Set<Plato> platos) {
+        this.platos = platos != null ? platos : new HashSet<>();
+    }
+    public Set<Pedido> getPedidos() { return pedidos; }
+    public void setPedidos(Set<Pedido> pedidos) {
+        this.pedidos = pedidos != null ? pedidos : new HashSet<>();
+    }
     // --- Métodos de gestión ---
 
     public boolean agregarPersonal(Personal personal) {
@@ -88,10 +95,9 @@ public abstract class UnidadVenta {
     // --- Métodos de negocio que dependen del Festival / ConfiguracionCostos ---
 
     public double calcularSueldos(Festival festival) {
-        ConfiguracionCostos config = festival.getConfiguracionCostos();
         double sueldos = 0;
         for (Personal personal : staff) {
-            sueldos += personal.calcularHaberes(config);
+            sueldos += personal.calcularHaberes(festival.getSueldoBase());
         }
         return sueldos;
     }

@@ -1,5 +1,7 @@
 package com.grupo14.datos;
 
+import java.util.Objects;
+
 public class DetallePedido {
 
     private Pedido pedido;
@@ -36,5 +38,18 @@ public class DetallePedido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DetallePedido other = (DetallePedido) obj;
+        return Objects.equals(pedido, other.pedido) && Objects.equals(plato, other.plato);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pedido.getId(), plato.getId());
     }
 }

@@ -1,6 +1,6 @@
 package com.grupo14.datos;
 
-import java.util.List;
+import java.util.Set;
 
 public class FoodTruck extends UnidadVenta {
     private String patente;
@@ -10,8 +10,8 @@ public class FoodTruck extends UnidadVenta {
     }
 
     public FoodTruck(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
-                       List<Personal> staff, String patente, boolean requiereConexion,
-                       List<Pedido> pedidos, List<Plato> platos) {
+                     Set<Personal> staff, String patente, boolean requiereConexion,
+                     Set<Pedido> pedidos, Set<Plato> platos) {
         super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
         this.patente = patente;
         this.requiereConexion = requiereConexion;
@@ -35,10 +35,9 @@ public class FoodTruck extends UnidadVenta {
 
     @Override
     public double calcularCannon(Festival festival) {
-        ConfiguracionCostos config = festival.getConfiguracionCostos();
-        double cannon = getSuperficie() * config.getCostoSuperficie();
+        double cannon = getSuperficie() * festival.getCostoSuperficie();
         if (getRequiereConexion()) {
-            cannon += config.getPlusElectricidad();
+            cannon += festival.getPlusElectricidad();
         }
         return cannon;
     }

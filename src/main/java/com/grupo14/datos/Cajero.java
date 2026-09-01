@@ -24,9 +24,8 @@ public class Cajero extends Personal {
     }
 
     @Override
-    public double calcularHaberes(ConfiguracionCostos configuracionFestival) {
-        return configuracionFestival.getSueldoBase()
-                + calcularAntiguedad() * configuracionFestival.getPlusAntiguedad();
+    public double calcularHaberes(double sueldoBase) {
+        return sueldoBase + calcularAntiguedad() * 150.0;
     }
 
     @Override

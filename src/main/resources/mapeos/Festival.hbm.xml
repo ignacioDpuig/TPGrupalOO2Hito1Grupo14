@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
     <class name="com.grupo14.datos.Festival" table="festival">
@@ -13,10 +13,12 @@
         <property name="fechaInicio" column="fecha_inicio" />
         <property name="fechaFin" column="fecha_fin" />
 
-        <!-- Relación con ConfiguracionCostos -->
-        <many-to-one name="configuracionCostos" class="com.grupo14.datos.ConfiguracionCostos" column="id_configuracion_costos" not-null="true"/>
+        <property name="costoSuperficie" column="costo_superficie" type="double"/>
+        <property name="costoMontaje" column="costo_montaje" type="double"/>
+        <property name="plusElectricidad" column="plus_electricidad" type="double"/>
+        <property name="sueldoBase" column="sueldo_base" type="double"/>
 
-        <set name="unidades" inverse="true" cascade="all-delete-orphan">
+        <set name="unidades" inverse="true" cascade="all-delete-orphan" lazy="false">
             <key column="id_festival"/>
             <one-to-many class="com.grupo14.datos.UnidadVenta"/>
         </set>

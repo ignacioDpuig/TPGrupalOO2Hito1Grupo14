@@ -12,20 +12,18 @@
         <property name="superficie" column="superficie" type="float"/>
         <property name="codigo" column="codigo" type="string"/>
 
-        <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false"/>
-
-
-        <set name="staff" table="unidad_venta_staff" cascade="save-update">
+        <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false" lazy="false"/>
+        <set name="staff" table="unidad_venta_staff" cascade="save-update" lazy="false">
             <key column="id_unidad_venta"/>
             <many-to-many class="com.grupo14.datos.Personal" column="id_personal"/>
         </set>
 
-        <set name="platos" table="unidad_venta_platos" cascade="save-update">
+        <set name="platos" table="unidad_venta_platos" cascade="save-update" lazy="false">
             <key column="id_unidad_venta"/>
             <many-to-many class="com.grupo14.datos.Plato" column="id_plato"/>
         </set>
 
-        <set name="pedidos" inverse="true" cascade="all-delete-orphan">
+        <set name="pedidos" inverse="true" cascade="all-delete-orphan" lazy="false">
             <key column="id_unidad_venta"/>
             <one-to-many class="com.grupo14.datos.Pedido"/>
         </set>

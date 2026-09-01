@@ -8,8 +8,8 @@
         
         <!-- Identificador compuesto por Pedido y Plato -->
         <composite-id>
-            <key-many-to-one name="pedido" class="com.grupo14.datos.Pedido" column="id_pedido"/>
-            <key-many-to-one name="plato" class="com.grupo14.datos.Plato" column="id_plato"/>
+            <key-many-to-one name="pedido" class="com.grupo14.datos.Pedido" column="id_pedido" lazy="false"/>
+            <key-many-to-one name="plato" class="com.grupo14.datos.Plato" column="id_plato" lazy="false"/>
         </composite-id>
 
         <!-- Propiedad normal del detalle -->

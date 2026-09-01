@@ -34,9 +34,8 @@ public class Cocinero extends Personal {
     }
 
     @Override
-    public double calcularHaberes(ConfiguracionCostos configuracionFestival) {
-        return configuracionFestival.getSueldoBase()
-                + configuracionFestival.getPlusCategoria() * getCategoria();
+    public double calcularHaberes(double sueldoBase) {
+        return sueldoBase + 500.0 * getCategoria(); // plus fijo por categoría
     }
 
     @Override

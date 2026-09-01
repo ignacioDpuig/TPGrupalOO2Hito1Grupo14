@@ -2,16 +2,14 @@ package com.grupo14.datos;
 import com.grupo14.util.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Pedido {
 	private int id;
 	private LocalDate fecha;
 	private UnidadVenta unidad;
 	private Festival festival;
-	private List<DetallePedido> detalles;
+	private Set<DetallePedido> detalles;
 
 	public int getId() {
 		return id;
@@ -45,26 +43,29 @@ public class Pedido {
 		this.unidad = unidad;
 	}
 
-	public List<DetallePedido> getDetalles() {
-		return new ArrayList<>(detalles);
+	public Set<DetallePedido> getDetalles() {
+		return detalles == null ? new HashSet<>() : detalles;
 	}
-
-	public void setDetalles(List<DetallePedido> detalles) throws Exception {
-		if (detalles.isEmpty() || detalles == null) {
-			throw new Exception("El detalle no puede estar vacio");
-		}
+	public void setDetalles(Set<DetallePedido> detalles) {
 		this.detalles = detalles;
 	}
 
-	public Pedido(int id, LocalDate fecha, UnidadVenta unidad, Festival festival, List<DetallePedido> detalles)
+	public Pedido(int id, LocalDate fecha, UnidadVenta unidad, Festival festival, Set<DetallePedido> detalles)
 			throws Exception {
+		if (detalles == null || detalles.isEmpty()) {
+			throw new Exception("El detalle no puede estar vacio");
+		}
 		setId(id);
 		setFecha(fecha);
 		this.unidad = unidad;
-		setDetalles(detalles);
+		this.detalles = detalles;
 		setFestival(festival);
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 	public Pedido() {
 	}
 

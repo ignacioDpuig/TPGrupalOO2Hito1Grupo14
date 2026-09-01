@@ -15,13 +15,13 @@ public abstract class Personal {
     }
 
     public Personal(int id, String nombre, String apellido, long dni,
-                    LocalDate fechaNacimiento, LocalDate fechaIngreso) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fechaIngreso = fechaIngreso;
+                    LocalDate fechaNacimiento, LocalDate fechaIngreso) throws Exception {
+        setId(id);
+        setNombre(nombre);
+        setApellido(apellido);
+        setDni(dni);
+        setFechaNacimiento(fechaNacimiento);
+        setFechaIngreso(fechaIngreso);
     }
 
     public int getId() {
@@ -60,10 +60,15 @@ public abstract class Personal {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) throws Exception {
+        if (fechaNacimiento != null) {
+            int edad = (int) ChronoUnit.YEARS.between(fechaNacimiento, LocalDate.now());
+            if (edad < 18) {
+                throw new Exception("El personal debe ser mayor de 18 años");
+            }
+        }
         this.fechaNacimiento = fechaNacimiento;
     }
-
     public LocalDate getFechaIngreso() {
         return fechaIngreso;
     }
@@ -78,7 +83,7 @@ public abstract class Personal {
         return antiguedad;
     }
 
-    public abstract double calcularHaberes(ConfiguracionCostos configuracionFestival);
+    public abstract double calcularHaberes(double sueldoBase);
 
     @Override
     public String toString() {

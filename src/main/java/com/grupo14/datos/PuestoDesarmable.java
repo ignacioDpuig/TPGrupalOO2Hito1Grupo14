@@ -1,6 +1,6 @@
 package com.grupo14.datos;
 
-import java.util.List;
+import java.util.Set;
 
 public class PuestoDesarmable extends UnidadVenta {
     private int cantidadCarpas;
@@ -10,8 +10,8 @@ public class PuestoDesarmable extends UnidadVenta {
     }
 
     public PuestoDesarmable(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
-                            List<Personal> staff, int cantidadCarpas, float tiempoMontajeMinutos,
-                            List<Pedido> pedidos, List<Plato> platos) {
+                            Set<Personal> staff, int cantidadCarpas, float tiempoMontajeMinutos,
+                            Set<Pedido> pedidos, Set<Plato> platos) {
         super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
         this.cantidadCarpas = cantidadCarpas;
         this.tiempoMontajeMinutos = tiempoMontajeMinutos;
@@ -35,9 +35,8 @@ public class PuestoDesarmable extends UnidadVenta {
 
     @Override
     public double calcularCannon(Festival festival) {
-        ConfiguracionCostos config = festival.getConfiguracionCostos();
-        double cannon = getSuperficie() * config.getCostoSuperficie();
-        cannon -= getTiempoMontajeMinutos() * config.getCostoMontaje();
+        double cannon = getSuperficie() * festival.getCostoSuperficie();
+        cannon += getTiempoMontajeMinutos() * festival.getCostoMontaje();
         return cannon;
     }
 
