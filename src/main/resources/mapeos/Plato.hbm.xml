@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.grupo14.datos.Plato" table="platos">
+        <id name="id" column="id" type="int">
+            <generator class="native"/>
+        </id>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="precioVenta" column="precio_venta" type="float"/>
+        <property name="costoProduccion" column="costo_produccion" type="float"/>
+    </class>
+</hibernate-mapping>

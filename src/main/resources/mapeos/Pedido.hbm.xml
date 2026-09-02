@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.grupo14.datos.Pedido" table="pedido">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" column="fecha" />
+
+        <many-to-one name="unidad" class="com.grupo14.datos.UnidadVenta" column="id_unidad_venta" not-null="false" lazy="false"/>
+        <many-to-one name="festival" class="com.grupo14.datos.Festival" column="id_festival" not-null="false" lazy="false"/>
+
+        <set name="detalles" cascade="all-delete-orphan" lazy="false">
+            <key column="id_pedido"/>
+            <one-to-many class="com.grupo14.datos.DetallePedido"/>
+        </set>
+    </class>
+</hibernate-mapping>

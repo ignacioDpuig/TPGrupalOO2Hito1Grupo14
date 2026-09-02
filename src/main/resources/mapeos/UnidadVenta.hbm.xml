@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.grupo14.datos.UnidadVenta" table="unidad_venta" abstract="true">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="nombreComercial" column="nombre_comercial" type="string"/>
+        <property name="superficie" column="superficie" type="float"/>
+        <property name="codigo" column="codigo" type="string"/>
+
+        <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false" lazy="false"/>
+        <set name="staff" table="unidad_venta_staff" cascade="save-update" lazy="false">
+            <key column="id_unidad_venta"/>
+            <many-to-many class="com.grupo14.datos.Personal" column="id_personal"/>
+        </set>
+
+        <set name="platos" table="unidad_venta_platos" cascade="save-update" lazy="false">
+            <key column="id_unidad_venta"/>
+            <many-to-many class="com.grupo14.datos.Plato" column="id_plato"/>
+        </set>
+
+        <set name="pedidos" inverse="true" cascade="all-delete-orphan" lazy="false">
+            <key column="id_unidad_venta"/>
+            <one-to-many class="com.grupo14.datos.Pedido"/>
+        </set>
+
+        <joined-subclass name="com.grupo14.datos.FoodTruck" table="food_truck">
+            <key column="id_food_truck"/>
+            <property name="patente" column="patente" type="string"/>
+            <property name="requiereConexion" column="requiere_conexion" type="boolean"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.grupo14.datos.PuestoDesarmable" table="puesto_desarmable">
+            <key column="id_puesto_desarmable"/>
+            <property name="cantidadCarpas" column="cantidad_carpas" type="int"/>
+            <property name="tiempoMontajeMinutos" column="tiempo_montaje_minutos" type="float"/>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

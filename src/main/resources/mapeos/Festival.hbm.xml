@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.grupo14.datos.Festival" table="festival">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="temporada" column="temporada" type="string"/>
+        <property name="fechaInicio" column="fecha_inicio" />
+        <property name="fechaFin" column="fecha_fin" />
+
+        <property name="costoSuperficie" column="costo_superficie" type="double"/>
+        <property name="costoMontaje" column="costo_montaje" type="double"/>
+        <property name="plusElectricidad" column="plus_electricidad" type="double"/>
+        <property name="sueldoBase" column="sueldo_base" type="double"/>
+
+        <set name="unidades" inverse="true" cascade="all-delete-orphan" lazy="false">
+            <key column="id_festival"/>
+            <one-to-many class="com.grupo14.datos.UnidadVenta"/>
+        </set>
+    </class>
+</hibernate-mapping>
