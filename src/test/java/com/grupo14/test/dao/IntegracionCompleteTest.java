@@ -338,8 +338,5 @@ public class IntegracionCompleteTest {
         System.out.println("\n========== FIN VERIFICACIÓN ==========\n");
     }
 
-    @AfterAll
-    public static void tearDown() {
-        HibernateUtil.getSessionFactory().close();
-    }
+    // No cerramos el SessionFactory aqui porque es un singleton compartido entre todos los tests
 }

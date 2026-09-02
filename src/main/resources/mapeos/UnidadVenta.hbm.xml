@@ -4,40 +4,94 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
+
+    <!--
+        MAPEO DE HERENCIA: UnidadVenta -> FoodTruck / PuestoDesarmable
+        Estrategia: JOINED (tabla por subclase)
+        - La tabla "unidad_venta" guarda los atributos comunes.
+        - FoodTruck y PuestoDesarmable tienen sus propias tablas con atributos extra.
+        abstract="true": UnidadVenta no se puede instanciar directamente, solo sus subclases.
+    -->
     <class name="com.grupo14.datos.UnidadVenta" table="unidad_venta" abstract="true">
+
+        <!-- Clave primaria con autogenerado por la BD -->
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
-        <property name="nombreComercial" column="nombre_comercial" type="string"/>
-        <property name="superficie" column="superficie" type="float"/>
-        <property name="codigo" column="codigo" type="string"/>
 
-        <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false" lazy="false"/>
+        <!-- Atributos comunes a toda unidad de venta -->
+        <property name="nombreComercial" column="nombre_comercial" type="string"/>
+        <property name="superficie"      column="superficie"       type="float"/>
+        <property name="codigo"          column="codigo"           type="string"/>
+
+        <!--
+            RELACION MUCHOS-A-UNO: UnidadVenta -> Personal (responsable)
+            Cada unidad tiene un responsable que es miembro del staff (Personal).
+            lazy="false": se carga junto con la unidad, sin consulta extra.
+        -->
+        <many-to-one name="responsableACargo"
+                     class="com.grupo14.datos.Personal"
+                     column="id_responsable"
+                     not-null="false"
+                     lazy="false"/>
+
+        <!--
+            RELACION UNO-A-MUCHOS (tabla intermedia): UnidadVenta -> Personal (staff)
+            Una unidad puede tener muchos empleados y un empleado puede estar en varias unidades.
+            Se usa una tabla intermedia "unidad_venta_staff" para la relacion muchos-a-muchos.
+            cascade="save-update": al guardar la unidad, guarda tambien el personal nuevo.
+            lazy="false": carga el staff junto con la unidad.
+        -->
         <set name="staff" table="unidad_venta_staff" cascade="save-update" lazy="false">
             <key column="id_unidad_venta"/>
             <many-to-many class="com.grupo14.datos.Personal" column="id_personal"/>
         </set>
 
+        <!--
+            RELACION UNO-A-MUCHOS (tabla intermedia): UnidadVenta -> Plato
+            Una unidad ofrece varios platos y un plato puede estar en varias unidades.
+            Tabla intermedia: "unidad_venta_platos".
+        -->
         <set name="platos" table="unidad_venta_platos" cascade="save-update" lazy="false">
             <key column="id_unidad_venta"/>
             <many-to-many class="com.grupo14.datos.Plato" column="id_plato"/>
         </set>
 
+        <!--
+            RELACION UNO-A-MUCHOS directa: UnidadVenta -> Pedido
+            Una unidad puede tener muchos pedidos. Los pedidos son "duenos" de la relacion
+            (inverse="true"), asi que ellos guardan el id_unidad_venta.
+            cascade="all-delete-orphan": si se borra la unidad, se borran sus pedidos.
+        -->
         <set name="pedidos" inverse="true" cascade="all-delete-orphan" lazy="false">
             <key column="id_unidad_venta"/>
             <one-to-many class="com.grupo14.datos.Pedido"/>
         </set>
 
+        <!--
+            SUBCLASE: FoodTruck
+            Tabla propia "food_truck" con sus atributos especificos:
+            - patente: identificacion del vehiculo.
+            - requiereConexion: si necesita electricidad (afecta el calculo del canon).
+        -->
         <joined-subclass name="com.grupo14.datos.FoodTruck" table="food_truck">
             <key column="id_food_truck"/>
-            <property name="patente" column="patente" type="string"/>
-            <property name="requiereConexion" column="requiere_conexion" type="boolean"/>
+            <property name="patente"          column="patente"           type="string"/>
+            <property name="requiereConexion"  column="requiere_conexion" type="boolean"/>
         </joined-subclass>
 
+        <!--
+            SUBCLASE: PuestoDesarmable
+            Tabla propia "puesto_desarmable" con sus atributos especificos:
+            - cantidadCarpas: cantidad de carpas del puesto.
+            - tiempoMontajeMinutos: tiempo de armado (afecta el calculo del canon).
+        -->
         <joined-subclass name="com.grupo14.datos.PuestoDesarmable" table="puesto_desarmable">
             <key column="id_puesto_desarmable"/>
-            <property name="cantidadCarpas" column="cantidad_carpas" type="int"/>
-            <property name="tiempoMontajeMinutos" column="tiempo_montaje_minutos" type="float"/>
+            <property name="cantidadCarpas"        column="cantidad_carpas"         type="int"/>
+            <property name="tiempoMontajeMinutos"  column="tiempo_montaje_minutos"  type="float"/>
         </joined-subclass>
+
     </class>
+
 </hibernate-mapping>
