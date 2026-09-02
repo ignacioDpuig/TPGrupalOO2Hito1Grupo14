@@ -8,7 +8,7 @@
 
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost/tp_grupo14</property>
-        <property name="connection.username">lean</property>
+        <property name="connection.username">joacoadra</property>
         <property name="connection.password">Estudiantes2004</property>
         <property name="connection.pool_size">1</property>
 
