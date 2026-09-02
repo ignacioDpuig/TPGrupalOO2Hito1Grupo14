@@ -15,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * CU: Dado un festival, listar todos sus pedidos con los detalles de cada uno,
  *     distinguiendo si la unidad de venta es un FoodTruck o un PuestoDesarmable.
  *
- * Relaciones cubiertas:
- *  - Herencia: UnidadVenta -> FoodTruck, UnidadVenta -> PuestoDesarmable
- *  - Uno a muchos: Pedido -> detalles (Set<DetallePedido>)
  */
 public class JoaquinTest {
 
@@ -67,7 +64,7 @@ public class JoaquinTest {
         int idResp = cocineroDao.agregar(responsable);
         responsable.setId(idResp);
 
-        // FoodTruck (herencia de UnidadVenta)
+        // FoodTruck 
         FoodTruck ft = new FoodTruck();
         ft.setNombreComercial("Sushi Wheels");
         ft.setSuperficie(12.0f);
@@ -78,7 +75,7 @@ public class JoaquinTest {
         int idFt = foodTruckDao.agregar(ft);
         ft.setId(idFt);
 
-        // PuestoDesarmable (herencia de UnidadVenta)
+        // PuestoDesarmable
         PuestoDesarmable puesto = new PuestoDesarmable();
         puesto.setNombreComercial("La Parrilla de Joaquin");
         puesto.setSuperficie(22.0f);
@@ -99,7 +96,7 @@ public class JoaquinTest {
         Plato plato3 = new Plato("Chorizo al Pan", 130.0f, 50.0f);
         plato3.setId(platoDao.agregar(plato3));
 
-        // Pedido 1 en FoodTruck (uno-a-muchos: pedido -> detalles)
+        // Pedido 1 en FoodTruck 
         Pedido pedido1 = new Pedido();
         pedido1.setFecha(LocalDate.of(2024, 7, 5));
         pedido1.setFestival(festival);
@@ -109,7 +106,7 @@ public class JoaquinTest {
         detalleDao.agregar(new DetallePedido(pedido1, plato1, 4));
         detalleDao.agregar(new DetallePedido(pedido1, plato2, 2));
 
-        // Pedido 2 en PuestoDesarmable (uno-a-muchos: pedido -> detalles)
+        // Pedido 2 en PuestoDesarmable 
         Pedido pedido2 = new Pedido();
         pedido2.setFecha(LocalDate.of(2024, 7, 6));
         pedido2.setFestival(festival);
@@ -130,7 +127,7 @@ public class JoaquinTest {
 
         // --- CONSULTA A LA BD ---
 
-        // Traer todos los pedidos del festival (uno-a-muchos festival -> pedidos)
+        // Traer todos los pedidos del festival
         Set<Pedido> pedidos = pedidoDao.traerPorFestival(idFestival);
         assertFalse(pedidos.isEmpty(), "Debe haber pedidos para el festival");
         assertEquals(3, pedidos.size(), "Deben ser 3 pedidos en total");
@@ -140,7 +137,7 @@ public class JoaquinTest {
 
         double recaudacionTotal = 0;
         for (Pedido p : pedidos) {
-            // Distinguir tipo de unidad usando herencia (instanceof)
+            // Distinguir tipo de unidad usando herencia 
             String tipoUnidad = (p.getUnidad() instanceof FoodTruck)
                     ? "FoodTruck"
                     : (p.getUnidad() instanceof PuestoDesarmable)
@@ -152,7 +149,7 @@ public class JoaquinTest {
                     + " | Unidad: " + p.getUnidad().getNombreComercial()
                     + " [" + tipoUnidad + "]");
 
-            // Detalles del pedido (uno-a-muchos: pedido -> DetallePedido)
+            // Detalles del pedido 
             for (DetallePedido d : p.getDetalles()) {
                 double subtotal = d.getPlato().getPrecioVenta() * d.getCantidad();
                 recaudacionTotal += subtotal;
