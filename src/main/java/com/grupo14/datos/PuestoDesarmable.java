@@ -11,10 +11,10 @@ public class PuestoDesarmable extends UnidadVenta {
 
     public PuestoDesarmable(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
                             Set<Personal> staff, int cantidadCarpas, float tiempoMontajeMinutos,
-                            Set<Pedido> pedidos, Set<Plato> platos) {
+                            Set<Pedido> pedidos, Set<Plato> platos) throws Exception{
         super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
-        this.cantidadCarpas = cantidadCarpas;
-        this.tiempoMontajeMinutos = tiempoMontajeMinutos;
+        setCantidadCarpas(cantidadCarpas);
+        setTiempoMontajeMinutos(tiempoMontajeMinutos);
     }
 
     public int getCantidadCarpas() {

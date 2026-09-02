@@ -11,10 +11,10 @@ public class Cocinero extends Personal {
 
     public Cocinero(int id, String nombre, String apellido, long dni,
                     LocalDate fechaNacimiento, LocalDate fechaIngreso,
-                    String especialidad, int categoria) {
+                    String especialidad, int categoria) throws Exception {
         super(id, nombre, apellido, dni, fechaNacimiento, fechaIngreso);
-        this.especialidad = especialidad;
-        this.categoria = categoria;
+        setEspecialidad(especialidad);
+        setCategoria(categoria);
     }
 
     public String getEspecialidad() {
@@ -35,7 +35,7 @@ public class Cocinero extends Personal {
 
     @Override
     public double calcularHaberes(double sueldoBase) {
-        return sueldoBase + 500.0 * getCategoria(); // plus fijo por categoría
+        return sueldoBase + 500.0 * getCategoria();
     }
 
     @Override

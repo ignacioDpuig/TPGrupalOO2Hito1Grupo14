@@ -11,9 +11,9 @@ public class DetallePedido {
     public DetallePedido() {}
 
     public DetallePedido(Pedido pedido, Plato plato, int cantidad) {
-        this.pedido = pedido;
-        this.plato = plato;
-        this.cantidad = cantidad;
+        setPedido(pedido);
+        setPlato(plato);
+        setCantidad(cantidad);
     }
 
     public Pedido getPedido() {

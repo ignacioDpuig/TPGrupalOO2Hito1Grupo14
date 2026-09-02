@@ -46,10 +46,10 @@ public class Pedido {
 	public Set<DetallePedido> getDetalles() {
 		return detalles == null ? new HashSet<>() : detalles;
 	}
-	public void setDetalles(Set<DetallePedido> detalles) {
-		this.detalles = detalles;
-	}
 
+	public void setDetalles(Set<DetallePedido> detalles) {
+		this.detalles = detalles != null ? detalles : new HashSet<>();
+	}
 	public Pedido(int id, LocalDate fecha, UnidadVenta unidad, Festival festival, Set<DetallePedido> detalles)
 			throws Exception {
 		if (detalles == null || detalles.isEmpty()) {
@@ -57,8 +57,8 @@ public class Pedido {
 		}
 		setId(id);
 		setFecha(fecha);
-		this.unidad = unidad;
-		this.detalles = detalles;
+		setDetalles(detalles);
+		setUnidad(unidad);
 		setFestival(festival);
 	}
 

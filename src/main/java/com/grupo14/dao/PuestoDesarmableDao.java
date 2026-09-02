@@ -73,18 +73,5 @@ public class PuestoDesarmableDao extends BaseDao {
         return puestosDesarmables;
     }
 
-    public Set<PuestoDesarmable> traerPorCantidadCarpas(int cantidadCarpas) {
-        Set<PuestoDesarmable> puestosDesarmables = new HashSet<>();
-        try {
-            iniciaOperacion();
-            Query<PuestoDesarmable> query = session.createQuery(
-                    "from PuestoDesarmable pd where pd.cantidadCarpas = :cantidad", PuestoDesarmable.class
-            );
-            query.setParameter("cantidad", cantidadCarpas);
-            puestosDesarmables = new HashSet<>(query.getResultList());
-        } finally {
-            session.close();
-        }
-        return puestosDesarmables;
-    }
+
 }

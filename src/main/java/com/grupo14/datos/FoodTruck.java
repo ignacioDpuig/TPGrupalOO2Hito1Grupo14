@@ -11,10 +11,10 @@ public class FoodTruck extends UnidadVenta {
 
     public FoodTruck(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
                      Set<Personal> staff, String patente, boolean requiereConexion,
-                     Set<Pedido> pedidos, Set<Plato> platos) {
+                     Set<Pedido> pedidos, Set<Plato> platos) throws Exception{
         super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
-        this.patente = patente;
-        this.requiereConexion = requiereConexion;
+        setPatente(patente);
+        setRequiereConexion(requiereConexion);
     }
 
     public String getPatente() {

@@ -25,17 +25,17 @@ public class Festival {
                     LocalDate fechaInicio, LocalDate fechaFin,
                     double costoSuperficie, double costoMontaje,
                     double plusElectricidad, double sueldoBase,
-                    List<UnidadVenta> unidades) {
-        this.id = id;
-        this.nombre = nombre;
-        this.temporada = temporada;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.costoSuperficie = costoSuperficie;
-        this.costoMontaje = costoMontaje;
-        this.plusElectricidad = plusElectricidad;
-        this.sueldoBase = sueldoBase;
-        this.unidades = unidades != null ? new HashSet<>(unidades) : new HashSet<>();
+                    Set<UnidadVenta> unidades) {
+        setId(id);
+        setNombre(nombre);
+        setTemporada(temporada);
+        setFechaInicio(fechaInicio);
+        setFechaFin(fechaFin);
+        setCostoSuperficie(costoSuperficie);
+        setCostoMontaje(costoMontaje);
+        setPlusElectricidad(plusElectricidad);
+        setSueldoBase(sueldoBase);
+        setUnidades(unidades);
     }
 
 

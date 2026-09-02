@@ -10,9 +10,9 @@ public class Plato {
     }
 
     public Plato(String nombre, float precioVenta, float costoProduccion) {
-        this.nombre = nombre;
-        this.precioVenta = precioVenta;
-        this.costoProduccion = costoProduccion;
+        setNombre(nombre);
+        setPrecioVenta(precioVenta);
+        setCostoProduccion(costoProduccion);
     }
 
     public int getId() {

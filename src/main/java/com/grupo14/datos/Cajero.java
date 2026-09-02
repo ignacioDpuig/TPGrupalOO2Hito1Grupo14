@@ -10,9 +10,9 @@ public class Cajero extends Personal {
 
     public Cajero(int id, String nombre, String apellido, long dni,
                   LocalDate fechaNacimiento, LocalDate fechaIngreso,
-                  String turno) {
+                  String turno) throws Exception {
         super(id, nombre, apellido, dni, fechaNacimiento, fechaIngreso);
-        this.turno = turno;
+        setTurno(turno);
     }
 
     public String getTurno() {

@@ -108,7 +108,7 @@ public abstract class UnidadVenta {
         if (pedidos == null || pedidos.isEmpty()) {
             return null;
         }
-        List<DetallePedido> totalesPorPlato = new ArrayList<>();
+        Set<DetallePedido> totalesPorPlato = new HashSet<>();
 
         for (Pedido pedido : pedidos) {
             for (DetallePedido detalleActual : pedido.getDetalles()) {
@@ -123,7 +123,6 @@ public abstract class UnidadVenta {
                     }
                 }
                 if (!platoEncontrado) {
-                    // Pasamos null en el pedido ya que es un objeto acumulador temporal en memoria
                     totalesPorPlato.add(new DetallePedido(null, platoActual, cantidadActual));
                 }
             }
@@ -131,13 +130,14 @@ public abstract class UnidadVenta {
         if (totalesPorPlato.isEmpty()) {
             return null;
         }
-        DetallePedido detalleEstrella = totalesPorPlato.get(0);
-        for (int i = 1; i < totalesPorPlato.size(); i++) {
-            if (totalesPorPlato.get(i).getCantidad() > detalleEstrella.getCantidad()) {
-                detalleEstrella = totalesPorPlato.get(i);
+        DetallePedido detalleEstrella = null;
+        for (DetallePedido detalle : totalesPorPlato) {
+            if (detalleEstrella == null || detalle.getCantidad() > detalleEstrella.getCantidad()) {
+                detalleEstrella = detalle;
             }
         }
-        return detalleEstrella.getPlato();
+
+        return detalleEstrella == null ? null : detalleEstrella.getPlato();
     }
 
     public double calcularRentabilidadNeta(Festival festival) {
