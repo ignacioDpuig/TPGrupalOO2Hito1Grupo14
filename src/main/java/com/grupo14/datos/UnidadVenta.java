@@ -9,6 +9,7 @@ public abstract class UnidadVenta {
     protected Personal responsableACargo;
     protected float superficie;
     protected String codigo;
+    protected Festival festival;
     protected Set<Personal> staff = new HashSet<>();
     protected Set<Plato> platos = new HashSet<>();
     protected Set<Pedido> pedidos = new HashSet<>();
@@ -39,6 +40,11 @@ public abstract class UnidadVenta {
 
     public Personal getResponsableACargo() { return responsableACargo; }
     public void setResponsableACargo(Personal responsableACargo) { this.responsableACargo = responsableACargo; }
+
+    // Lado "dueño" de la relación Festival <-> UnidadVenta.
+    // Es esta clase la que persiste la FK id_festival en la tabla unidad_venta.
+    public Festival getFestival() { return festival; }
+    public void setFestival(Festival festival) { this.festival = festival; }
 
     public float getSuperficie() { return superficie; }
     public void setSuperficie(float superficie) { this.superficie = superficie; }

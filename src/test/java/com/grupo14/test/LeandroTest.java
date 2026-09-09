@@ -8,37 +8,13 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * CASO DE USO - Responsable: Leandro
- *
- * CU: Dado un festival, listar todas sus unidades de venta y calcular
- *     el canon que debe pagar cada una segun su tipo.
- *
- * Conceptos de OO demostrados:
- *  - HERENCIA: UnidadVenta es la clase padre abstracta. FoodTruck y PuestoDesarmable
- *              son subclases que sobreescriben calcularCannon() con logica propia:
- *              · FoodTruck:        canon = superficie * costoSuperficie [+ plusElectricidad si requiere]
- *              · PuestoDesarmable: canon = superficie * costoSuperficie + tiempoMontaje * costoMontaje
- *  - UNO A MUCHOS: Un Festival tiene muchas UnidadVenta.
- *
- * Flujo del test:
- *  1. Inserta un festival con costos, 2 FoodTrucks y 2 PuestosDesarmables en la BD.
- *  2. Recupera cada unidad desde la BD por su ID.
- *  3. Calcula el canon de cada una usando polimorfismo (calcularCannon()).
- *  4. Muestra el resultado y suma el canon total del festival.
- */
 public class LeandroTest {
 
-    // DAOs: capa de acceso a datos, uno por entidad
     private static FestivalDao         festivalDao;
     private static CocineroDao         cocineroDao;
     private static FoodTruckDao        foodTruckDao;
     private static PuestoDesarmableDao puestoDao;
 
-    /**
-     * Se ejecuta UNA VEZ antes de todos los tests de la clase.
-     * Instancia los DAOs que se van a usar.
-     */
     @BeforeAll
     public static void setUp() {
         festivalDao  = new FestivalDao();
@@ -55,7 +31,6 @@ public class LeandroTest {
         // PASO 1: INSERCION DE DATOS EN LA BD
         // =====================================================================
 
-        // Festival con costos definidos — estos valores se usan en calcularCannon()
         Festival festival = new Festival();
         festival.setNombre("Festival Leandro 2024");
         festival.setTemporada("Verano");
@@ -68,15 +43,12 @@ public class LeandroTest {
         festival.setId(festivalDao.agregar(festival)); // INSERT en tabla festival
         assertTrue(festival.getId() > 0, "Festival debe guardarse en la BD");
 
-        // Responsable de las unidades (subclase Cocinero de Personal)
         Cocinero responsable = new Cocinero(0, "Marcos", "Lima", 35500001L,
                 LocalDate.of(1986, 3, 14), LocalDate.of(2018, 7, 1),
                 "Italiana", 2);
         responsable.setId(cocineroDao.agregar(responsable)); // INSERT en personal + cocinero
 
-        // FoodTruck 1 — CON conexion electrica
-        // Herencia: FoodTruck extiende UnidadVenta, sobreescribe calcularCannon()
-        // Canon esperado: 20m2 * $120 + $500 electricidad = $2900
+
         FoodTruck ft1 = new FoodTruck();
         ft1.setNombreComercial("Burger Bus");
         ft1.setSuperficie(20.0f);
@@ -86,8 +58,7 @@ public class LeandroTest {
         ft1.setRequiereConexion(true); // paga plus de electricidad
         ft1.setId(foodTruckDao.agregar(ft1)); // INSERT en unidad_venta + food_truck
 
-        // FoodTruck 2 — SIN conexion electrica
-        // Canon esperado: 15m2 * $120 = $1800
+
         FoodTruck ft2 = new FoodTruck();
         ft2.setNombreComercial("Taco Truck");
         ft2.setSuperficie(15.0f);
@@ -97,9 +68,7 @@ public class LeandroTest {
         ft2.setRequiereConexion(false); // no paga plus de electricidad
         ft2.setId(foodTruckDao.agregar(ft2)); // INSERT en unidad_venta + food_truck
 
-        // PuestoDesarmable 1 — 3 carpas, 120 minutos de montaje
-        // Herencia: PuestoDesarmable extiende UnidadVenta, sobreescribe calcularCannon()
-        // Canon esperado: 25m2 * $120 + 120min * $30 = $3000 + $3600 = $6600
+
         PuestoDesarmable puesto1 = new PuestoDesarmable();
         puesto1.setNombreComercial("Pizzeria del Sur");
         puesto1.setSuperficie(25.0f);
@@ -109,8 +78,7 @@ public class LeandroTest {
         puesto1.setTiempoMontajeMinutos(120.0f);
         puesto1.setId(puestoDao.agregar(puesto1)); // INSERT en unidad_venta + puesto_desarmable
 
-        // PuestoDesarmable 2 — 1 carpa, 45 minutos de montaje
-        // Canon esperado: 10m2 * $120 + 45min * $30 = $1200 + $1350 = $2550
+
         PuestoDesarmable puesto2 = new PuestoDesarmable();
         puesto2.setNombreComercial("Empanadas Express");
         puesto2.setSuperficie(10.0f);
@@ -119,12 +87,9 @@ public class LeandroTest {
         puesto2.setCantidadCarpas(1);
         puesto2.setTiempoMontajeMinutos(45.0f);
         puesto2.setId(puestoDao.agregar(puesto2)); // INSERT en unidad_venta + puesto_desarmable
+        
 
-        // =====================================================================
-        // PASO 2: CONSULTA A LA BD
-        // Recuperamos cada unidad por su ID para obtener el objeto hidratado por Hibernate
-        // =====================================================================
-        Festival  festivalRecuperado = festivalDao.traer(festival.getId());
+        Festival  festivalRecuperado = festivalDao.traer(festival.getId()); //Firma de traer. pasar el festival completo para respetar el paradigma de objeto verificar que en la lcase trabajo con festival
         FoodTruck ft1Recuperado      = foodTruckDao.traer(ft1.getId());
         FoodTruck ft2Recuperado      = foodTruckDao.traer(ft2.getId());
         PuestoDesarmable pd1Rec      = puestoDao.traer(puesto1.getId());
@@ -136,10 +101,7 @@ public class LeandroTest {
         assertNotNull(pd1Rec,             "Puesto 1 debe recuperarse de la BD");
         assertNotNull(pd2Rec,             "Puesto 2 debe recuperarse de la BD");
 
-        // =====================================================================
-        // PASO 3: CALCULAR CANON Y MOSTRAR RESULTADO
-        // calcularCannon() es polimorfico: cada subclase tiene su propia implementacion
-        // =====================================================================
+
         System.out.println("Festival: " + festivalRecuperado.getNombre());
         System.out.printf("Costos: superficie=$%.2f/m2 | montaje=$%.2f/min | electricidad=$%.2f%n%n",
                 festivalRecuperado.getCostoSuperficie(),
@@ -148,7 +110,6 @@ public class LeandroTest {
 
         double canonTotal = 0;
 
-        // FoodTrucks: calcularCannon() suma superficie * costoSuperficie [+ plusElectricidad]
         System.out.println("  --- Food Trucks ---");
         for (FoodTruck ft : new FoodTruck[]{ft1Recuperado, ft2Recuperado}) {
             double canon = ft.calcularCannon(festivalRecuperado); // POLIMORFISMO
@@ -161,7 +122,6 @@ public class LeandroTest {
             assertTrue(canon > 0, "Canon del FoodTruck debe ser mayor a 0");
         }
 
-        // PuestosDesarmables: calcularCannon() suma superficie * costoSuperficie + montaje * costoMontaje
         System.out.println("  --- Puestos Desarmables ---");
         for (PuestoDesarmable pd : new PuestoDesarmable[]{pd1Rec, pd2Rec}) {
             double canon = pd.calcularCannon(festivalRecuperado); // POLIMORFISMO
@@ -180,5 +140,4 @@ public class LeandroTest {
         System.out.println("\n========== FIN CU LEANDRO ==========\n");
     }
 
-    // No cerramos el SessionFactory aqui porque es un singleton compartido entre todos los tests
 }

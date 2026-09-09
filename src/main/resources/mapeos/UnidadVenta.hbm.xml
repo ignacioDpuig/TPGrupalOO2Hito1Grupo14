@@ -36,6 +36,18 @@
                      lazy="false"/>
 
         <!--
+            RELACION MUCHOS-A-UNO: UnidadVenta -> Festival
+            Este es el lado DUEÑO de la relacion Festival <-> UnidadVenta.
+            Comparte la columna "id_festival" con el <set> inverse="true" del Festival,
+            por eso al asignar la unidad al festival se persiste esta FK.
+        -->
+        <many-to-one name="festival"
+                     class="com.grupo14.datos.Festival"
+                     column="id_festival"
+                     not-null="false"
+                     lazy="false"/>
+
+        <!--
             RELACION UNO-A-MUCHOS (tabla intermedia): UnidadVenta -> Personal (staff)
             Una unidad puede tener muchos empleados y un empleado puede estar en varias unidades.
             Se usa una tabla intermedia "unidad_venta_staff" para la relacion muchos-a-muchos.
