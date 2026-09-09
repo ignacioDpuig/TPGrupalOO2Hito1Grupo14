@@ -7,7 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CajeroDao extends BaseDao{
 
@@ -74,29 +76,29 @@ public class CajeroDao extends BaseDao{
         return cajero;
     }
 
-    public List<Cajero> traer() {
-        List<Cajero> lista = new ArrayList<>();
+    public Set<Cajero> traer() {
+        Set<Cajero> lista = new HashSet<>();
         try {
             iniciaOperacion();
             Query<Cajero> query = session.createQuery(
                     "from Cajero c order by c.apellido asc, c.nombre asc", Cajero.class
             );
-            lista = query.getResultList();
+            lista = new HashSet<>(query.getResultList());
         } finally {
             session.close();
         }
         return lista;
     }
 
-    public List<Cajero> traerPorTurno(String turno) {
-        List<Cajero> lista = new ArrayList<>();
+    public Set<Cajero> traerPorTurno(String turno) {
+        Set<Cajero> lista = new HashSet<>();
         try {
             iniciaOperacion();
             Query<Cajero> query = session.createQuery(
                     "from Cajero c where c.turno = :turno order by c.apellido asc", Cajero.class
             );
             query.setParameter("turno", turno);
-            lista = query.getResultList();
+            lista = new HashSet<>(query.getResultList());
         } finally {
             session.close();
         }

@@ -9,10 +9,10 @@ public class FoodTruck extends UnidadVenta {
     public FoodTruck() {
     }
 
-    public FoodTruck(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
+    public FoodTruck(int id, String nombreComercial, Personal responsableACargo, float superficie,
                      Set<Personal> staff, String patente, boolean requiereConexion,
-                     Set<Pedido> pedidos, Set<Plato> platos) throws Exception{
-        super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
+                     Set<Pedido> pedidos, Set<Plato> platos, Festival festival) throws Exception{
+        super(id, nombreComercial, responsableACargo, superficie, staff, pedidos, platos, festival);
         setPatente(patente);
         setRequiereConexion(requiereConexion);
     }
@@ -34,10 +34,10 @@ public class FoodTruck extends UnidadVenta {
     }
 
     @Override
-    public double calcularCannon(Festival festival) {
-        double cannon = getSuperficie() * festival.getCostoSuperficie();
+    public double calcularCannon() {
+        double cannon = getSuperficie() * this.festival.getCostoSuperficie();
         if (getRequiereConexion()) {
-            cannon += festival.getPlusElectricidad();
+            cannon += this.festival.getPlusElectricidad();
         }
         return cannon;
     }

@@ -50,6 +50,8 @@ public class DetallePedido {
 
     @Override
     public int hashCode() {
-        return Objects.hash(pedido.getId(), plato.getId());
-    }
-}
+        return Objects.hash(
+                pedido == null ? 0 : pedido.getId(),
+                plato == null ? 0 : plato.getId()
+        );
+    }}

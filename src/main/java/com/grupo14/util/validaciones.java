@@ -1,5 +1,7 @@
 package com.grupo14.util;
 
+import com.grupo14.datos.UnidadVenta;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -85,34 +87,30 @@ public class validaciones {
 				"La categoría '" + categoria + "' no es válida. Use una de las siguientes: " + categoriasStr + ".");
 	}
 
-	private static String generarCodigoUnidadVenta(String nombreFantasia) throws Exception {
-		if (nombreFantasia == null || nombreFantasia.trim().isEmpty()) {
-			throw new Exception("El nombre de fantasía no puede ser nulo o vacío para generar el código.");
+	public static String generarCodigoUnidadVenta(UnidadVenta unidad) throws Exception {
+		if (unidad == null) {
+			throw new Exception("La unidad no puede ser nula.");
+		}
+		if (unidad.getNombreComercial() == null || unidad.getNombreComercial().isBlank()) {
+			throw new Exception("La unidad debe tener nombre comercial.");
+		}
+		if (unidad.getId() < 0 || unidad.getId() > 9999999) {
+			throw new Exception("El id debe estar entre 0 y 9999999.");
 		}
 
-		LocalDate ahora = LocalDate.now();
+		String nombre = unidad.getNombreComercial()
+				.replaceAll("[^A-Za-z]", "")
+				.toUpperCase();
 
-		DateTimeFormatter formatoDia = DateTimeFormatter.ofPattern("dd");
-		String dia = ahora.format(formatoDia);
-
-		DateTimeFormatter formatoAnio = DateTimeFormatter.ofPattern("yyyy");
-		String anio = ahora.format(formatoAnio);
-
-		return dia + nombreFantasia + anio;
-	}
-
-	public static String validarCodigoUnidadVenta(String codigo, String nombreFantasia) throws Exception {
-		if (codigo == null || codigo.trim().isEmpty()) {
-			throw new Exception("El código a validar no puede ser nulo o vacío.");
-		}
-
-		String codigoEsperado = generarCodigoUnidadVenta(nombreFantasia);
-
-		if (codigo.equals(codigoEsperado)) {
-			return codigo;
+		if (nombre.length() >= 3) {
+			nombre = nombre.substring(0, 3);
 		} else {
-			throw new Exception("El código '" + codigo + "' no es válido. Se esperaba '" + codigoEsperado + "'.");
+			nombre = String.format("%-3s", nombre).replace(' ', 'X');
 		}
+
+		String id = String.format("%07d", unidad.getId());
+
+		return nombre + id;
 	}
 
 	public static String validarPatente(String patenteStr) throws Exception {

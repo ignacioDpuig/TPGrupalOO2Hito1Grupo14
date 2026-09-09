@@ -3,12 +3,8 @@ package com.grupo14.dao;
 import com.grupo14.datos.Cocinero;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CocineroDao extends BaseDao {

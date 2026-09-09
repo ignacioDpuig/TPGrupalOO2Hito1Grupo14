@@ -75,6 +75,7 @@ public class Festival {
 
     public boolean agregarUnidad(UnidadVenta unidad) {
         if (unidad == null) return false;
+        unidad.setFestival(this);
         return unidades.add(unidad);
     }
 

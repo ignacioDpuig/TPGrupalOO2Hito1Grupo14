@@ -13,6 +13,13 @@
         <property name="codigo" column="codigo" type="string"/>
 
         <many-to-one name="responsableACargo" class="com.grupo14.datos.Personal" column="id_responsable" not-null="false" lazy="false"/>
+
+        <many-to-one name="festival"
+                     class="com.grupo14.datos.Festival"
+                     column="id_festival"
+                     not-null="false"
+                     lazy="false"/>
+
         <set name="staff" table="unidad_venta_staff" cascade="save-update" lazy="false">
             <key column="id_unidad_venta"/>
             <many-to-many class="com.grupo14.datos.Personal" column="id_personal"/>

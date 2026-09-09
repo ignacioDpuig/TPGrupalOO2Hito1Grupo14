@@ -9,10 +9,10 @@ public class PuestoDesarmable extends UnidadVenta {
     public PuestoDesarmable() {
     }
 
-    public PuestoDesarmable(int id, String nombreComercial, Personal responsableACargo, float superficie, String codigo,
+    public PuestoDesarmable(int id, String nombreComercial, Personal responsableACargo, float superficie,
                             Set<Personal> staff, int cantidadCarpas, float tiempoMontajeMinutos,
-                            Set<Pedido> pedidos, Set<Plato> platos) throws Exception{
-        super(id, nombreComercial, responsableACargo, superficie, codigo, staff, pedidos, platos);
+                            Set<Pedido> pedidos, Set<Plato> platos, Festival festival) throws Exception{
+        super(id, nombreComercial, responsableACargo, superficie, staff, pedidos, platos,festival);
         setCantidadCarpas(cantidadCarpas);
         setTiempoMontajeMinutos(tiempoMontajeMinutos);
     }
@@ -34,9 +34,9 @@ public class PuestoDesarmable extends UnidadVenta {
     }
 
     @Override
-    public double calcularCannon(Festival festival) {
-        double cannon = getSuperficie() * festival.getCostoSuperficie();
-        cannon += getTiempoMontajeMinutos() * festival.getCostoMontaje();
+    public double calcularCannon() {
+        double cannon = getSuperficie() * this.festival.getCostoSuperficie();
+        cannon += getTiempoMontajeMinutos() * this.festival.getCostoMontaje();
         return cannon;
     }
 
