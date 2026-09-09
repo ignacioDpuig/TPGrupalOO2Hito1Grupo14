@@ -4,50 +4,25 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-
-    <!--
-        MAPEO DE HERENCIA: Personal -> Cajero / Cocinero
-        Estrategia: JOINED (tabla por subclase)
-        - La tabla "personal" guarda los atributos comunes a todos los empleados.
-        - Cada subclase (Cajero, Cocinero) tiene su propia tabla con sus atributos extra,
-          unida a "personal" por la clave foranea "id".
-        Esto representa la relacion de HERENCIA del diagrama de clases.
-    -->
     <class name="com.grupo14.datos.Personal" table="personal">
-
-        <!-- Clave primaria con autogenerado por la BD -->
         <id name="id" column="id">
             <generator class="identity"/>
         </id>
-
-        <!-- Atributos comunes a todo el personal -->
-        <property name="nombre"          column="nombre"          type="string"/>
-        <property name="apellido"        column="apellido"        type="string"/>
-        <property name="dni"             column="dni"             type="long"/>
+        <property name="nombre" column="nombre" type="string"/>
+        <property name="apellido" column="apellido" type="string"/>
+        <property name="dni" column="dni" type="long"/>
         <property name="fechaNacimiento" column="fecha_nacimiento"/>
-        <property name="fechaIngreso"    column="fecha_ingreso"/>
+        <property name="fechaIngreso" column="fecha_ingreso"/>
 
-        <!--
-            SUBCLASE: Cajero
-            Tabla propia "cajero" con su atributo especifico: turno (mañana/noche).
-            Se une a "personal" por la columna "id".
-        -->
         <joined-subclass name="com.grupo14.datos.Cajero" table="cajero">
             <key column="id"/>
             <property name="turno" column="turno" type="string"/>
         </joined-subclass>
 
-        <!--
-            SUBCLASE: Cocinero
-            Tabla propia "cocinero" con sus atributos especificos:
-            especialidad culinaria y categoria (determina el plus salarial).
-        -->
         <joined-subclass name="com.grupo14.datos.Cocinero" table="cocinero">
             <key column="id"/>
             <property name="especialidad" column="especialidad" type="string"/>
-            <property name="categoria"    column="categoria"    type="int"/>
+            <property name="categoria" column="categoria" type="int"/>
         </joined-subclass>
-
     </class>
-
 </hibernate-mapping>

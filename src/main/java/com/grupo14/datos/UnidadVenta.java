@@ -1,5 +1,7 @@
 package com.grupo14.datos;
 
+import com.grupo14.util.validaciones;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -9,25 +11,25 @@ public abstract class UnidadVenta {
     protected Personal responsableACargo;
     protected float superficie;
     protected String codigo;
-    protected Festival festival;
     protected Set<Personal> staff = new HashSet<>();
     protected Set<Plato> platos = new HashSet<>();
     protected Set<Pedido> pedidos = new HashSet<>();
-
+    protected Festival festival;
     public UnidadVenta() {
     }
 
     public UnidadVenta(int id, String nombreComercial, Personal responsableACargo,
-                       float superficie, String codigo, Set<Personal> staff,
-                       Set<Pedido> pedidos, Set<Plato> platos) throws Exception {
+                       float superficie, Set<Personal> staff,
+                       Set<Pedido> pedidos, Set<Plato> platos, Festival festival) throws Exception {
         setId(id);
         setNombreComercial(nombreComercial);
-        setResponsableACargo(responsableACargo);
-        setSuperficie(superficie);
-        setCodigo(codigo);
         setStaff(staff);
+        asignarResponsableACargo(responsableACargo);
+        setSuperficie(superficie);
+        setCodigo(validaciones.generarCodigoUnidadVenta(this));
         setPedidos(pedidos);
         setPlatos(platos);
+        setFestival(festival);
     }
 
     // --- Getters y setters simples ---
@@ -39,13 +41,9 @@ public abstract class UnidadVenta {
     public void setNombreComercial(String nombreComercial) { this.nombreComercial = nombreComercial; }
 
     public Personal getResponsableACargo() { return responsableACargo; }
-    public void setResponsableACargo(Personal responsableACargo) { this.responsableACargo = responsableACargo; }
-
-    // Lado "dueño" de la relación Festival <-> UnidadVenta.
-    // Es esta clase la que persiste la FK id_festival en la tabla unidad_venta.
-    public Festival getFestival() { return festival; }
-    public void setFestival(Festival festival) { this.festival = festival; }
-
+    public void setResponsableACargo(Personal responsableACargo) {
+        this.responsableACargo = responsableACargo;
+    }
     public float getSuperficie() { return superficie; }
     public void setSuperficie(float superficie) { this.superficie = superficie; }
 
@@ -56,6 +54,13 @@ public abstract class UnidadVenta {
             throw new Exception("El código debe tener exactamente 10 caracteres");
         }
         this.codigo = codigo;
+    }
+    public Festival getFestival() {
+        return festival;
+    }
+
+    public void setFestival(Festival festival) {
+        this.festival = festival;
     }
     // --- Listas ---
 
@@ -73,6 +78,16 @@ public abstract class UnidadVenta {
         this.pedidos = pedidos != null ? pedidos : new HashSet<>();
     }
     // --- Métodos de gestión ---
+
+    public void asignarResponsableACargo(Personal responsableACargo) {
+        if (responsableACargo == null) {
+            throw new IllegalArgumentException("El responsable no puede ser null");
+        }
+        if (!staff.contains(responsableACargo)) {
+            throw new IllegalArgumentException("El responsable debe formar parte del staff");
+        }
+        this.responsableACargo = responsableACargo;
+    }
 
     public boolean agregarPersonal(Personal personal) {
         return staff.add(personal);
@@ -98,17 +113,17 @@ public abstract class UnidadVenta {
         return pedidos.remove(pedido);
     }
 
-    // --- Métodos de negocio que dependen del Festival / ConfiguracionCostos ---
+    // --- Métodos de negocio que dependen del Festival  ---
 
-    public double calcularSueldos(Festival festival) {
+    public double calcularSueldos() {
         double sueldos = 0;
         for (Personal personal : staff) {
-            sueldos += personal.calcularHaberes(festival.getSueldoBase());
+            sueldos += personal.calcularHaberes(this.festival.getSueldoBase());
         }
         return sueldos;
     }
 
-    public abstract double calcularCannon(Festival festival);
+    public abstract double calcularCannon();
 
     public Plato platoEstrella() {
         if (pedidos == null || pedidos.isEmpty()) {
@@ -153,10 +168,10 @@ public abstract class UnidadVenta {
                 gananciaNeta += detalle.getPlato().calcularNeto() * detalle.getCantidad();
             }
         }
-        return gananciaNeta - calcularSueldos(festival) - calcularCannon(festival);
+        return gananciaNeta - calcularSueldos() - calcularCannon();
     }
 
-    public double calcularRentabilidadNetaEntreFechas(Festival festival, LocalDate fechaDesde, LocalDate fechaHasta) {
+    public double calcularRentabilidadNetaEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta) {
         double gananciaNeta = 0;
         for (Pedido pedido : pedidos) {
             if (!pedido.getFecha().isBefore(fechaDesde) && !pedido.getFecha().isAfter(fechaHasta)) {
@@ -165,7 +180,7 @@ public abstract class UnidadVenta {
                 }
             }
         }
-        return gananciaNeta - calcularSueldos(festival) - calcularCannon(festival);
+        return gananciaNeta - calcularSueldos() - calcularCannon();
     }
 
     public float calcularRecaudacionTotal() {

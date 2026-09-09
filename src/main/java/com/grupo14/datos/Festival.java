@@ -75,18 +75,12 @@ public class Festival {
 
     public boolean agregarUnidad(UnidadVenta unidad) {
         if (unidad == null) return false;
-        boolean agregada = unidades.add(unidad);
-        // Sincroniza el lado dueño: la UnidadVenta es la que persiste id_festival.
         unidad.setFestival(this);
-        return agregada;
+        return unidades.add(unidad);
     }
 
     public boolean eliminarUnidad(UnidadVenta unidad) {
-        boolean eliminada = unidades.remove(unidad);
-        if (eliminada && unidad != null) {
-            unidad.setFestival(null);
-        }
-        return eliminada;
+        return unidades.remove(unidad);
     }
 
     @Override

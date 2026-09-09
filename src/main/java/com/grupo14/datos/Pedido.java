@@ -20,9 +20,12 @@ public class Pedido {
 	}
 
 	public void setFestival(Festival festival) {
+		if (unidad != null && unidad.getFestival() != null
+				&& !unidad.getFestival().equals(festival)) {
+			throw new IllegalArgumentException("El festival del pedido debe coincidir con el de la unidad");
+		}
 		this.festival = festival;
 	}
-
 	public void setId(int id) throws Exception {
 		this.id = validaciones.validarId(id);
 	}
@@ -39,7 +42,11 @@ public class Pedido {
 		return unidad;
 	}
 
-	public void setUnidad(UnidadVenta unidad) {
+	public void setUnidad(UnidadVenta unidad) { //como pedido tiene festival y unidad tiene festival, hay que verificar que coincidan
+		if (festival != null && unidad != null && unidad.getFestival() != null
+				&& !festival.equals(unidad.getFestival())) {
+			throw new IllegalArgumentException("La unidad no pertenece al festival del pedido");
+		}
 		this.unidad = unidad;
 	}
 
