@@ -1,105 +1,47 @@
 package com.grupo14.test;
 
-import com.grupo14.dao.CajeroDao;
-import com.grupo14.dao.CocineroDao;
 import com.grupo14.dao.FestivalDao;
-import com.grupo14.dao.FoodTruckDao;
-import com.grupo14.dao.PuestoDesarmableDao;
-import com.grupo14.datos.Cajero;
-import com.grupo14.datos.Cocinero;
+import com.grupo14.datos.DatosIniciales;
 import com.grupo14.datos.Festival;
 import com.grupo14.datos.FoodTruck;
-import com.grupo14.datos.Personal;
 import com.grupo14.datos.PuestoDesarmable;
 import com.grupo14.datos.UnidadVenta;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
+/**
+ * TEST DE PERSISTENCIA DEL CANON - Responsable: Leandro
+ *
+ * CU: Recuperar un festival desde la BD con sus unidades y verificar que el
+ *     canon que devuelve el metodo calcularCannon() de cada unidad coincide
+ *     con el valor esperado calculado a mano.
+ *
+ * Los datos son sembrados por DatosIniciales.cargar() (seed compartido por
+ * el grupo), de modo que este test NO crea datos: solo consulta y valida.
+ *
+ * Formula del canon segun el tipo de unidad (polimorfismo):
+ *  - FoodTruck        : superficie * costoSuperficie (+ plusElectricidad si requiere conexion).
+ *  - PuestoDesarmable : superficie * costoSuperficie + tiempoMontaje * costoMontaje.
+ */
 public class LeandroTest {
 
     public static void main(String[] args) throws Exception {
-        FestivalDao festivalDao = new FestivalDao();
-        CocineroDao cocineroDao = new CocineroDao();
-        CajeroDao cajeroDao = new CajeroDao();
-        FoodTruckDao foodTruckDao = new FoodTruckDao();
-        PuestoDesarmableDao puestoDao = new PuestoDesarmableDao();
-
         System.out.println("=== INICIO TEST PERSISTENCIA CANON FESTIVAL ===");
 
-        Festival festival = new Festival();
-        festival.setNombre("Festival Canon");
-        festival.setTemporada("Verano");
-        festival.setFechaInicio(LocalDate.of(2026, 1, 10));
-        festival.setFechaFin(LocalDate.of(2026, 1, 20));
-        festival.setCostoSuperficie(100.0);
-        festival.setCostoMontaje(10.0);
-        festival.setPlusElectricidad(500.0);
-        festival.setSueldoBase(1000.0);
-        festival.setUnidades(new HashSet<>());
-        festival.setId(festivalDao.agregar(festival));
-        checkTrue(festival.getId() > 0, "Festival persistido");
+        // --- 1. SEED: se cargan los datos compartidos del grupo ---
+        DatosIniciales.Resultado datos = DatosIniciales.cargar();
+        checkTrue(datos.festival.getId() > 0, "Festival persistido");
+        checkTrue(datos.foodTruck.getId() > 0, "FoodTruck persistido");
+        checkTrue(datos.puesto.getId() > 0, "Puesto persistido");
 
-        Cocinero cocineroFt = new Cocinero(
-                0, "Mario", "Rossi", 30111222L,
-                LocalDate.of(1988, 5, 10), LocalDate.now().minusYears(6),
-                "Hamburguesas", 2
-        );
-        cocineroFt.setId(cocineroDao.agregar(cocineroFt));
-
-        Cajero cajeroFt = new Cajero(
-                0, "Ana", "Lopez", 32111333L,
-                LocalDate.of(1990, 3, 22), LocalDate.now().minusYears(4),
-                "MANANA"
-        );
-        cajeroFt.setId(cajeroDao.agregar(cajeroFt));
-
-        Set<Personal> staffFt = new HashSet<>();
-        staffFt.add(cocineroFt);
-        staffFt.add(cajeroFt);
-
-        FoodTruck foodTruck = new FoodTruck(
-                0, "BurgerBus", cocineroFt, 20.0f,
-                staffFt, "ABC123", true,
-                new HashSet<>(), new HashSet<>(), festival
-        );
-        foodTruck.setId(foodTruckDao.agregar(foodTruck));
-        checkTrue(foodTruck.getId() > 0, "FoodTruck persistido");
-
-        Cocinero cocineroPd = new Cocinero(
-                0, "Lucia", "Perez", 33111444L,
-                LocalDate.of(1987, 8, 15), LocalDate.now().minusYears(3),
-                "Pizzas", 1
-        );
-        cocineroPd.setId(cocineroDao.agregar(cocineroPd));
-
-        Cajero cajeroPd = new Cajero(
-                0, "Juan", "Gomez", 34111555L,
-                LocalDate.of(1992, 12, 1), LocalDate.now().minusYears(2),
-                "NOCHE"
-        );
-        cajeroPd.setId(cajeroDao.agregar(cajeroPd));
-
-        Set<Personal> staffPd = new HashSet<>();
-        staffPd.add(cocineroPd);
-        staffPd.add(cajeroPd);
-
-        PuestoDesarmable puesto = new PuestoDesarmable(
-                0, "PizzaSur", cajeroPd, 15.0f,
-                staffPd, 2, 60.0f,
-                new HashSet<>(), new HashSet<>(), festival
-        );
-        puesto.setId(puestoDao.agregar(puesto));
-        checkTrue(puesto.getId() > 0, "Puesto persistido");
-
-        festival.agregarUnidad(foodTruck);
-        festival.agregarUnidad(puesto);
-
-        Festival festivalDb = festivalDao.traer(festival.getId());
+        // --- 2. SELECT: recuperamos el festival desde la BD con sus unidades ---
+        FestivalDao festivalDao = new FestivalDao();
+        Festival festivalDb = festivalDao.traer(datos.festival.getId());
         checkNotNull(festivalDb, "Festival recuperado");
         checkEquals(2, festivalDb.getUnidades().size(), "Festival recupera sus 2 unidades");
 
+        // --- 3. VERIFICACION del canon por unidad ---
+        // Para cada unidad recuperada calculamos el canon esperado a mano y lo
+        // comparamos contra el resultado de calcularCannon() (que resuelve la
+        // formula segun la subclase real: polimorfismo).
         double canonTotal = 0.0;
         double canonEsperadoTotal = 0.0;
 
@@ -108,6 +50,7 @@ public class LeandroTest {
             canonTotal += canon;
 
             if (unidad instanceof FoodTruck foodTruckDb) {
+                // FoodTruck: superficie * costoSuperficie + plus electricidad (si corresponde).
                 double esperado = foodTruckDb.getSuperficie() * festivalDb.getCostoSuperficie();
                 double plus = foodTruckDb.getRequiereConexion() ? festivalDb.getPlusElectricidad() : 0.0;
                 esperado += plus;
@@ -126,6 +69,7 @@ public class LeandroTest {
             }
 
             if (unidad instanceof PuestoDesarmable puestoDb) {
+                // PuestoDesarmable: superficie * costoSuperficie + tiempoMontaje * costoMontaje.
                 double esperado = puestoDb.getSuperficie() * festivalDb.getCostoSuperficie()
                         + puestoDb.getTiempoMontajeMinutos() * festivalDb.getCostoMontaje();
                 canonEsperadoTotal += esperado;
@@ -144,6 +88,7 @@ public class LeandroTest {
             }
         }
 
+        // --- 4. VERIFICACION del canon total del festival ---
         System.out.println(
                 "Canon total festival = " + canonEsperadoTotal +
                         " | calculado sumando unidades = " + canonTotal
@@ -153,6 +98,13 @@ public class LeandroTest {
         System.out.println("=== TEST OK ===");
     }
 
+    // =========================================================================
+    // Metodos de comprobacion. Si la condicion esperada no se cumple lanzan
+    // una excepcion (el test corta y falla); si se cumple imprimen "OK" con
+    // el mensaje correspondiente.
+    // =========================================================================
+
+    /** Falla si la condicion es false. */
     private static void checkTrue(boolean condition, String mensaje) {
         if (!condition) {
             throw new RuntimeException("FALLO: " + mensaje);
@@ -160,6 +112,7 @@ public class LeandroTest {
         System.out.println("OK: " + mensaje);
     }
 
+    /** Falla si el valor es null. */
     private static void checkNotNull(Object value, String mensaje) {
         if (value == null) {
             throw new RuntimeException("FALLO: " + mensaje);
@@ -167,6 +120,7 @@ public class LeandroTest {
         System.out.println("OK: " + mensaje);
     }
 
+    /** Falla si los dos enteros no son iguales. */
     private static void checkEquals(int esperado, int actual, String mensaje) {
         if (esperado != actual) {
             throw new RuntimeException("FALLO: " + mensaje + " | esperado=" + esperado + " actual=" + actual);
@@ -174,6 +128,7 @@ public class LeandroTest {
         System.out.println("OK: " + mensaje);
     }
 
+    /** Falla si los dos valores decimales difieren mas que la tolerancia dada. */
     private static void checkEquals(double esperado, double actual, double tolerancia, String mensaje) {
         if (Math.abs(esperado - actual) > tolerancia) {
             throw new RuntimeException("FALLO: " + mensaje + " | esperado=" + esperado + " actual=" + actual);
