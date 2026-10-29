@@ -47,7 +47,7 @@ flowchart LR
     RP --> DB[(MySQL)]
 ```
 
-**Frase para arrancar:** "Cada request pasa por tres capas antes del controller: Spring Security decide si puede entrar a la URL, el interceptor decide si la cuenta está en condiciones de operar, y el resolver le entrega al controller la unidad del usuario logueado."
+
 
 ---
 
